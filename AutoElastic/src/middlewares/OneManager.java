@@ -151,6 +151,29 @@ public class OneManager {
         return load;
     }
     
+        /**
+     * Return the load of the cloud based on CPU
+     * @return [0 &lt load &lt 1]
+     */
+    public float getMemLoad(){
+        float used = orpool.getUsedMEM();
+        float allocated = orpool.getAllocatedMEM();        
+        float load = used / allocated;
+        return load;
+    }
+    
+        /**
+     * Return the load of the cloud based on CPU
+     * @return [0 &lt load &lt 1]
+     */
+    public float getNetworkLoad(){
+        float used = orpool.getUsedNetwork();
+        float allocated = orpool.getAllocatedNetwork();        
+        float load = used / allocated;
+        return load;
+    }
+    
+    
     //return the total of CPU available in the cloud
     public float getAllocatedCPU(){
         return orpool.getAllocatedCPU();
@@ -172,6 +195,16 @@ public class OneManager {
     //return the current use of MEM
     public float getUsedMEM(){
         return orpool.getUsedMEM();
+    }
+    
+    //return the total of NETWORK available in the cloud
+    public float getAllocatedNetwork(){
+        return orpool.getAllocatedNetwork();
+    }
+    
+    //return the current use of NETWORK
+    public float getUsedNetwork(){
+        return orpool.getUsedNetwork();
     }
     
     /**

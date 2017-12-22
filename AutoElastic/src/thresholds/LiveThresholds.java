@@ -28,7 +28,7 @@ public class LiveThresholds extends StaticThresholds{
     private float current_lower_threshold;
 
     public LiveThresholds(float uppert, float lowert) {
-        super(uppert, lowert);
+        super(uppert, lowert,0,0,0,0);
         current_upper_threshold = uppert;
         current_lower_threshold = lowert;
         counter = 0;
@@ -61,8 +61,8 @@ public class LiveThresholds extends StaticThresholds{
     
     @Override
     public void resetThresholds(){
-        current_lower_threshold = super.lower_threshold;
-        current_upper_threshold = super.upper_threshold;
+        current_lower_threshold = super.lower_cpu_threshold;
+        current_upper_threshold = super.upper_cpu_threshold;
     }
     
     /**
@@ -88,39 +88,12 @@ public class LiveThresholds extends StaticThresholds{
         current_lower_threshold = z - (Math.abs(x - y)/2);
         current_upper_threshold = 1;
     }
-    
-    /**
-     * Return the current upper threshold
-     * @return current current upper threshold
-     */
-    @Override
-    public float getUpperThreshold() {
-        return current_upper_threshold;
-    }
 
-    /**
-     * Return the current lower threshold
-     * @return current lower threshold
-     */
-    @Override
-    public float getLowerThreshold() {
-        return current_lower_threshold;
-    }
-    
-    @Override
-    public void setUpperThreshold(float threshold){
-        current_upper_threshold = threshold;
-    }
-    
-    @Override
-    public void setLowerThreshold(float threshold){
-        current_lower_threshold = threshold;
-    }
     
     @Override
     public void reset(float uppert, float lowert) {
-        upper_threshold = uppert;
-        lower_threshold = lowert;
+        upper_cpu_threshold = uppert;
+        lower_cpu_threshold = lowert;
         current_upper_threshold = uppert;
         current_lower_threshold = lowert;
         counter = 0;

@@ -15,13 +15,21 @@ package thresholds;
  */
 public class StaticThresholds implements Thresholds{
     
-    protected float upper_threshold;
-    protected float lower_threshold;
+    protected float upper_cpu_threshold;
+    protected float lower_cpu_threshold;
+    protected float upper_mem_threshold;
+    protected float lower_mem_threshold;
+    protected float upper_network_threshold;
+    protected float lower_network_threshold;
     protected String objname;
     
-    public StaticThresholds(float uppert, float lowert){
-        upper_threshold = uppert;
-        lower_threshold = lowert;
+    public StaticThresholds(float upperCpuT, float lowerCpuT, float upperMemT, float lowerMemT, float upperNetworkT, float lowerNetworkT){
+        upper_cpu_threshold = upperCpuT;
+        lower_cpu_threshold = lowerCpuT;
+        upper_mem_threshold = upperMemT;
+        lower_mem_threshold = lowerMemT;
+        upper_network_threshold = upperNetworkT;
+        lower_network_threshold = lowerNetworkT;
     }
 
     /**
@@ -49,8 +57,8 @@ public class StaticThresholds implements Thresholds{
      * @return current current upper threshold
      */
     @Override
-    public float getUpperThreshold() {
-        return upper_threshold;
+    public float getUpperCpuThreshold() {
+        return upper_cpu_threshold;
     }
 
     /**
@@ -58,23 +66,63 @@ public class StaticThresholds implements Thresholds{
      * @return current lower threshold
      */
     @Override
-    public float getLowerThreshold() {
-        return lower_threshold;
+    public float getLowerCpuThreshold() {
+        return lower_cpu_threshold;
     }
         
     @Override
-    public void setUpperThreshold(float threshold) {
-        upper_threshold = threshold;
+    public void setUpperCpuThreshold(float threshold) {
+        upper_cpu_threshold = threshold;
     }
 
     @Override
-    public void setLowerThreshold(float threshold) {
-        lower_threshold = threshold;
+    public void setLowerCpuThreshold(float threshold) {
+        lower_cpu_threshold = threshold;
     }
 
     @Override
     public void reset(float uppert, float lowert) {
-        upper_threshold = uppert;
-        lower_threshold = lowert;
+        upper_cpu_threshold = uppert;
+        lower_cpu_threshold = lowert;
     }    
+
+    @Override
+    public float getUpperMemThreshold() {
+        return upper_mem_threshold;
+    }
+
+    @Override
+    public float getLowerMemThreshold() {
+        return lower_mem_threshold;
+    }
+
+    @Override
+    public void setUpperMemThreshold(float threshold) {
+        upper_mem_threshold = threshold;
+    }
+
+    @Override
+    public void setLowerMemThreshold(float threshold) {
+        lower_mem_threshold = threshold;
+    }
+
+    @Override
+    public float getUpperNetworkThreshold() {
+        return upper_network_threshold;
+    }
+
+    @Override
+    public float getLowerNetworkThreshold() {
+        return lower_network_threshold;
+    }
+
+    @Override
+    public void setUpperNetworkThreshold(float threshold) {
+        upper_network_threshold = threshold;
+    }
+
+    @Override
+    public void setLowerNetworkThreshold(float threshold) {
+        lower_network_threshold = threshold;
+    }
 }

@@ -78,8 +78,12 @@ public class AutoElasticManager implements Runnable {
     private static String logspath;
     private static int vmtemplateid;
     private static int intervalo;
-    private static float uppert;
-    private static float lowert;
+    private static float upperCpuT;
+    private static float lowerCpuT;
+    private static float upperMemT;
+    private static float lowerMemT;
+    private static float upperNetworkT;
+    private static float lowerNetworkT;
     private static String evaluatortype;
     private static String thresholdtype;
     private static int viewsize;
@@ -131,8 +135,8 @@ public class AutoElasticManager implements Runnable {
      * @param plogname - name of the file to save the log
      * @param ptemplateid - template id of the virtual machine to be launched
      * @param pintervalo - time between the monitoring observations
-     * @param pthreshouldmax - the value of the upper threshold
-     * @param pthreshouldmin - the value of the lower threshold
+     * @param pthreshouldCpumax - the value of the upper threshold
+     * @param pthreshouldCpuMin - the value of the lower threshold
      * @param pvmsporhost - amount of virtual machines to be launched in each physical machine
      * @param pevaluator - type of evaluator algorithm
      * @param pthresholdtype - type of threshold algorithm
@@ -163,8 +167,12 @@ public class AutoElasticManager implements Runnable {
                        String plogname,
                        int ptemplateid, 
                        int pintervalo, 
-                       double pthreshouldmax, 
-                       double pthreshouldmin, 
+                       double pthreshouldCpumax, 
+                       double pthreshouldCpuMin, 
+                       double pthreshouldMemMax, 
+                       double pthreshouldMemMin,
+                       double pthreshouldNetworkMax, 
+                       double pthreshouldNetworkMin,
                        int pvmsporhost,
                        String pevaluator,
                        String pthresholdtype,
@@ -197,8 +205,12 @@ public class AutoElasticManager implements Runnable {
         logspath = plogpath;
         vmtemplateid = ptemplateid;
         intervalo = pintervalo * 1000;
-        uppert = (float) pthreshouldmax;
-        lowert = (float) pthreshouldmin;
+        upperCpuT = (float) pthreshouldCpumax;
+        lowerCpuT = (float) pthreshouldCpuMin;
+        upperMemT = (float) pthreshouldMemMax;
+        lowerMemT = (float) pthreshouldMemMin;
+        upperNetworkT = (float) pthreshouldNetworkMax;
+        lowerNetworkT = (float) pthreshouldNetworkMin;
         evaluatortype = pevaluator;
         thresholdtype = pthresholdtype; 
         viewsize = pmonitoringwindow;
@@ -235,7 +247,7 @@ public class AutoElasticManager implements Runnable {
     public void run() {
         
         //Este é o gerenciador principal
-        System.out.println("Oi Vini");        
+        System.out.println("Olá ElasticRAN");        
 
         try {
             monitoring = true;
@@ -287,11 +299,11 @@ public class AutoElasticManager implements Runnable {
     }
     
     //método para geração do arquivo de log
-    private static void export_log(int contador, int time, long timemilis, int num_hosts, float tot_cpu_dis, float tot_cpu_usa, float tot_mem_dis, float tot_mem_usa, double th_max, double th_min, float load, float calcutated_load, float lowert, float uppert, String extra_info){
+    private static void export_log(int contador, int time, long timemilis, int num_hosts, float tot_cpu_dis, float tot_cpu_usa, float tot_mem_dis, float tot_mem_usa, double th_max, double th_min, float load, float calcutated_load, float lowerCpuT, float upperCpuT, String extra_info){
         File arquivo = new File(logspath + "autoelastic" + logtitle + ".csv");
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
-            escritor.append(contador + ";" + time + ";" + timemilis + ";" + num_hosts + ";" + tot_cpu_dis + ";" + tot_cpu_usa + ";" + tot_mem_dis + ";" + tot_mem_usa + ";" + th_max + ";" + th_min + ";" + load + ";" + calcutated_load + ";" + lowert + ";" + uppert + ";" + extra_info + "\n");
+            escritor.append(contador + ";" + time + ";" + timemilis + ";" + num_hosts + ";" + tot_cpu_dis + ";" + tot_cpu_usa + ";" + tot_mem_dis + ";" + tot_mem_usa + ";" + th_max + ";" + th_min + ";" + load + ";" + calcutated_load + ";" + lowerCpuT + ";" + upperCpuT + ";" + extra_info + "\n");
             escritor.close();
         } catch (IOException ex) { 
             Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -315,16 +327,22 @@ public class AutoElasticManager implements Runnable {
             /*LOG*/gera_log(objname,"monitoring: " + cont + " Time: " + time + "s" + " | " + timen);
             /*LOG*/gera_log(objname,"monitoring: Synchronizing data.");
             cloud_manager.syncData(); //synchronize data of the cloud
-            thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds
+            thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds APENAS USADO PARA LIVETHRESHOLDING
+            
             /*LOG*/gera_log(objname,"monitoring: Used CPU of all resources: " + cloud_manager.getUsedCPU() + " / Total CPU of all resources: " + cloud_manager.getAllocatedCPU());
-            evaluator.computeLoad(cloud_manager.getCPULoad());            
-            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionLoad() + " / Upper threshold = " + thresholds.getUpperThreshold() + " / Lower threshold = " + thresholds.getLowerThreshold());
+            /*LOG*/gera_log(objname,"monitoring: Used MEM of all resources: " + cloud_manager.getUsedMEM()+ " / Total MEM of all resources: " + cloud_manager.getAllocatedCPU());
+            /*LOG*/gera_log(objname,"monitoring: Used NETWORK of all resources: " + cloud_manager.getUsedNetwork() + " / Total NETWORK of all resources: " + cloud_manager.getAllocatedCPU());
+            evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), cloud_manager.getNetworkLoad());            
+            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionCpuLoad() + " / Upper threshold = " + thresholds.getUpperCpuThreshold() + " / Lower threshold = " + thresholds.getLowerCpuThreshold());
+            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionMemLoad() + " / Upper threshold = " + thresholds.getUpperMemThreshold() + " / Lower threshold = " + thresholds.getLowerMemThreshold());
+            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionNetworkLoad() + " / Upper threshold = " + thresholds.getUpperNetworkThreshold() + " / Lower threshold = " + thresholds.getLowerNetworkThreshold());
+            
             if (!cmdmode){
-                /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionLoad());
-                /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold(), evaluator.getDecisionLoad());            
+                /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionCpuLoad());
+                /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold(), evaluator.getDecisionCpuLoad());            
             }
             if (recalculate_thresholds > 0){//if this flag is greater than 0, then we must recalculate the thresholds (Live Thresholding)
-                load_after = evaluator.getDecisionLoad();//get the new load with the new resources
+                load_after = evaluator.getDecisionCpuLoad();//get the new load with the new resources
                 switch (recalculate_thresholds){
                     case 1://it means that the upper threshold was violated
                         thresholds.recalculateUpperThreshold(1,load_after,load_after);
@@ -335,11 +353,11 @@ public class AutoElasticManager implements Runnable {
                 recalculate_thresholds = 0;
             }
             /*LOG*/gera_log(objname,"monitoring: Checking threshold violations.");
-            if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending) && (cooldowncont < 0)){
+            if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold())) && (!resourcesPending) && (cooldowncont < 0)){
                 //analyze the cloud situation and if we have some violation we need deal with this 
                     //and if we are not waiting for new resource allocation we can evaluate the cloud
                     //and if we are not in a cooldown period
-                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     /*LOG*/gera_log(objname,"monitoring: Upper threshold violated. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
@@ -366,7 +384,7 @@ public class AutoElasticManager implements Runnable {
                         }
                         cooldowncont = cooldown;//set a cooldown period
                         recalculate_thresholds = 2;
-                        load_before = evaluator.getDecisionLoad();
+                        load_before = evaluator.getDecisionCpuLoad();
                     } else {
                         /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
@@ -375,11 +393,11 @@ public class AutoElasticManager implements Runnable {
                 }
             } else {
                 /*LOG*/gera_log(objname,"monitoring: No operations detected or allowed.");
-                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
                 gera_log(objname, "monitoring: Checking if new resources are online.");
-                load_before = evaluator.getDecisionLoad();
+                load_before = evaluator.getDecisionCpuLoad();
                 resourcesPending = cloud_manager.newResourcesPending(); //we must check before sleep if we have to deliver resources, thus these resources will only be considered at the next observation
                 if (!resourcesPending){//if we delivered the resources, in the next observations we must recalculate the thresholds
                     recalculate_thresholds = 1;
@@ -480,10 +498,10 @@ public class AutoElasticManager implements Runnable {
         //create a new threshold manager
         switch (thresholdtype){
             case "static":
-                thresholds = new StaticThresholds(uppert, lowert);
+                thresholds = new StaticThresholds(upperCpuT, lowerCpuT, upperMemT, lowerMemT, upperNetworkT, lowerNetworkT);
                 break;
             case "live":
-                thresholds = new LiveThresholds(uppert, lowert);
+                thresholds = new LiveThresholds(upperCpuT, lowerCpuT);
         }
         
         if (!monitoring){return false;}//return if not monitoring
@@ -557,20 +575,20 @@ public class AutoElasticManager implements Runnable {
         int minimum_hosts = 1;
         boolean letsgo = false;
         String[] apps = {"ex-"};//cargas que serao testadas
-        int[] upperthresholds = {70,90};//thresholds que serao testados
-        int[] lowerthresholds = {30,50};//thresholds que serao testados
+        int[] upperCpuThresholds = {70,90};//thresholds que serao testados
+        int[] lowerCpuThresholds = {30,50};//thresholds que serao testados
         for (String app : apps) {
-            for (int uthreshold : upperthresholds){
-                for (int lthreshold : lowerthresholds){
+            for (int uthreshold : upperCpuThresholds){
+                for (int lthreshold : lowerCpuThresholds){
                     if (lthreshold <= uthreshold){//não posso fazer execuções em que threshold inferior é maior que o superior
                         //seto os parametros dessa execução
                         AutoElasticManager.logtitle = thresholdtype + "-" + app + "UT" + uthreshold + "LT" + lthreshold;
                         System.out.println("Log: " + AutoElasticManager.logtitle);
-                        AutoElasticManager.uppert = (float) uthreshold/100;
-                        AutoElasticManager.lowert = (float) lthreshold/100;
+                        AutoElasticManager.upperCpuT = (float) uthreshold/100;
+                        AutoElasticManager.lowerCpuT = (float) lthreshold/100;
 
                         export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador;Tempo;Tempo Milisegundos;Total Hosts Ativos;Total CPU Alocada;Total CPU Usada;Total RAM Alocada;Total RAM Usada;CPU Limite Superior;CPU Limite Inferior;% Carga de CPU;Load Calculado;Threshold Inferior;Threshold Superior;Tempos de Monitoramento");
-                        thresholds.reset(uppert, lowert);
+                        thresholds.reset(upperCpuT, lowerCpuT);
                         evaluator.reset();
 
                         //tenho que verificar se não tenho recursos sendo iniciados da execução anterior
@@ -697,14 +715,14 @@ public class AutoElasticManager implements Runnable {
             times = times + ";" + System.currentTimeMillis(); //T3-AposSincronizar&AntesDeCalcularThresholds
             thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds            
             times = times + ";" + System.currentTimeMillis(); //T4-AposCalcularThresholds
-            //*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-            //*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
-            ///*LOG*/gera_log(objname,"Main|monitora: Carga do ambiente: " + cloud_manager.getCPULoad() + " / Threshold superior: " + thresholds.getUpperThreshold() + " / Threshold inferior: " + thresholds.getLowerThreshold());
+            //*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold());
+            //*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold());
+            ///*LOG*/gera_log(objname,"Main|monitora: Carga do ambiente: " + cloud_manager.getCPULoad() + " / Threshold superior: " + thresholds.getUpperCpuThreshold() + " / Threshold inferior: " + thresholds.getLowerCpuThreshold());
             ///*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
             times = times + ";" + System.currentTimeMillis(); //T5-AntesDeAvaliarCarga
-            evaluator.computeLoad(cloud_manager.getCPULoad());
+            evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), cloud_manager.getNetworkLoad());
             if (recalculate_thresholds > 0){//se essa flag foi maior que 0 então devo recalcular os thresholds (faço isso após a sincronização)
-                load_after = evaluator.getDecisionLoad();//pego o novo load já com os novos recursos
+                load_after = evaluator.getDecisionCpuLoad();//pego o novo load já com os novos recursos
                 switch (recalculate_thresholds){
                     case 1://significa que a violação foi no threshold superior
                         //thresholds.setUpperThreshold(1);                                            //técnica 1
@@ -720,10 +738,10 @@ public class AutoElasticManager implements Runnable {
                 }
                 recalculate_thresholds = 0;
             }
-            if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
+            if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold())) && (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 times = times + ";" + System.currentTimeMillis(); //T6-AposAvaliarCarga
-                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
                 //here we need deal with the violation
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
@@ -748,7 +766,7 @@ public class AutoElasticManager implements Runnable {
                         times = times + ";;;" + System.currentTimeMillis(); //T7 e T8 vazios + T9-AntesDeDesalocar
                         cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
                         recalculate_thresholds = 2;
-                        load_before = evaluator.getDecisionLoad();
+                        load_before = evaluator.getDecisionCpuLoad();
                         times = times + ";" + System.currentTimeMillis(); //T10-AposDesalocar
                     } else {
                         times = times + ";;;;"; //T7 T8 T9 e T10 vazios
@@ -759,12 +777,12 @@ public class AutoElasticManager implements Runnable {
                 }
             } else {
                 times = times + ";" + System.currentTimeMillis() + ";;;;"; //T6-AposAvaliarCarga + T7 T8 T9 e T10 vazios
-                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
                 ///*LOG*/gera_log(objname,"Main: Nenhum problema detectado pelo avaliador ou aguardando vms.");
             }
             times = times + ";" + System.currentTimeMillis(); //T11-AntesVerificarRecursosPendentes
             if (resourcesPending){//se tenho recursos pendentes, entao devo verificar se eles ja estao online para eu adicionalos e recalcular os thresholds
-                load_before = evaluator.getDecisionLoad();
+                load_before = evaluator.getDecisionCpuLoad();
                 resourcesPending = cloud_manager.newResourcesPending(); //verifico no final antes do sleep se tenho que entregar mais recursos, dessa maneira esses recursos só serão analisados na próxima observação
                 if (!resourcesPending){//se agora eles não estão mais pendentes é porque ficaram online, tenho que recalcular os thresholds no início da próxima observação
                     recalculate_thresholds = 1;

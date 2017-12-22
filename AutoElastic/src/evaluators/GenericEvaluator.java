@@ -27,7 +27,9 @@ public class GenericEvaluator implements Evaluator{
     protected byte counter;         //quantidade de vezes consecutivas que threshold foi violado
     protected boolean high_alert;   //flag para avisar se o limite superior foi atingido VIEW_SIZE vezes consecutivas
     protected boolean low_alert;    //flag para avisar se o limite inferior foi atingido VIEW_SIZE vezes consecutivas
-    protected float decision_load;  //value used to compare with thresholds
+    protected float decision_cpu_load;  //value used to compare with thresholds CPU
+    protected float decision_mem_load;  //value used to compare with thresholds CPU
+    protected float decision_network_load;  //value used to compare with thresholds CPU
     //public GenericEvaluator(int viewsize, float th_max, float th_min){
         //threshold_high = th_max;
         //threshold_low = th_min;
@@ -35,7 +37,7 @@ public class GenericEvaluator implements Evaluator{
         counter = 0; 
         high_alert = false;
         low_alert = false;
-        decision_load = 0;
+        decision_cpu_load = 0;
         VIEW_SIZE = viewsize;
     }
     
@@ -44,11 +46,11 @@ public class GenericEvaluator implements Evaluator{
     public boolean evaluate(float upper_threshold, float lower_threshold){
         //----------------------------------------------------------------------
         //para realizar a avaliação primeiramente comparo a cpu com os thresholds
-        if (decision_load > upper_threshold){        //verifico se violamos o limite superior
+        if (decision_cpu_load > upper_threshold){        //verifico se violamos o limite superior
             if (counter >= 0){          //se sim, então verifico se o contador de violações está zerado ou já possui alguma contagem consecutiva de violações superiores
                 counter++;              //se sim então incremento o contador
             } else counter = 1;         //se não, isso quer dizer que violações inferiores tinham ocorrido, então realizo a primeira contagem consecutiva de violação superior
-        } else if (decision_load < lower_threshold){ //se não, então verifico se violamos o limite inferior
+        } else if (decision_cpu_load < lower_threshold){ //se não, então verifico se violamos o limite inferior
             if (counter <= 0){          //se sim, então verifico se o contador de violações está zerado ou já possui alguma contagem consecutiva de violações inferiores
                 counter--;              //se sim então incremento o contador
             } else counter = -1;        //se não, isso quer dizer que violações superiores tinham ocorrido, então realizo a primeira contagem consecutiva de violação inferior
@@ -79,14 +81,24 @@ public class GenericEvaluator implements Evaluator{
     }
     
     @Override
-    public float computeLoad(float load) {
-        decision_load = load;
-        return decision_load;
+    public float computeLoad(float load, float memLoad, float networkLoad) {
+        decision_cpu_load = load;
+        return decision_cpu_load;
     }
     
-        @Override
-    public float getDecisionLoad() {
-        return decision_load;
+    @Override
+    public float getDecisionCpuLoad() {
+        return decision_cpu_load;
+    }
+    
+    @Override
+    public float getDecisionMemLoad() {
+        return decision_mem_load;    
+    }
+
+    @Override
+    public float getDecisionNetworkLoad() {
+        return decision_network_load;    
     }
     
     //25/04/2014:método para retornar se há necessidade de realizar alguma ação para violação superior
@@ -126,7 +138,7 @@ public class GenericEvaluator implements Evaluator{
         counter = 0;
         high_alert = false;
         low_alert = false;
-        decision_load = 0;
+        decision_cpu_load = 0;
     }
     
 }

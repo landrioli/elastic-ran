@@ -48,6 +48,8 @@ public class OneResourcePool {
     private float hostAllCPU;         //soma do total de cpu de todos os hosts ativos
     private float hostUsedMEM;        //soma do uso de memória de todos os hosts ativos
     private float hostAllMEM;         //soma do total de memória de todos os hosts ativos
+    private float hostUsedNetwork;
+    private float hostAllNetwork;
     private String hostAllMonitoringTimes; //string with all LAST_MON_TIME's of the used hosts in the pool
     private float vmUsedCPU;          //sum of all virtual machines used CPU 
     private float vmAllCPU;           //sum of all virtual machines available CPU
@@ -127,6 +129,14 @@ public class OneResourcePool {
         } else {
             return this.vmAllMEM;
         }
+    }
+    
+    public float getUsedNetwork(){
+        return this.hostUsedNetwork;
+    }
+    
+    public float getAllocatedNetwork(){
+        return this.hostAllNetwork;
     }
     
     public String getLastMonitorTimes(){
@@ -253,6 +263,8 @@ public class OneResourcePool {
             hostUsedCPU = 0;
             hostAllMEM = 0;
             hostUsedMEM = 0;
+            hostAllNetwork = 0;
+            hostUsedNetwork = 0;
             hostAllMonitoringTimes = "";
             for (OneHost host_ativo : hosts_ativos) {
                 //percorre todos os hosts ativos
@@ -261,9 +273,12 @@ public class OneResourcePool {
                     host_ativo.syncInfo(); //sincroniza cada host
                     hostUsedCPU = hostUsedCPU + host_ativo.getUsedCPU(); //pega uso da cpu
                     hostUsedMEM = hostUsedMEM + host_ativo.getUsedMEM(); //get used memory
+                    hostUsedNetwork = hostUsedNetwork + host_ativo.getUsedNetwork(); //get used network
                     //gera_log(objname, "Main|OneResourcePool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.getUsedCPU());
                     hostAllCPU = hostAllCPU + host_ativo.getMaxCPU(); //pega total de cpu
                     hostAllMEM = hostAllMEM + host_ativo.getMaxMEM(); //get total memory
+                    hostAllNetwork = hostAllNetwork + host_ativo.getMaxNetwork(); //get total network
+                    
                     hostAllMonitoringTimes += ";" + host_ativo.getLastMonTime(); //get the last_mon_time of the host and append in the attribute
                     gera_log(objname,"syncResources: HOST " + host_ativo.getID() + " synchronized.");
                 }catch (ParserConfigurationException | SAXException | IOException e) {

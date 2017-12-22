@@ -14,9 +14,13 @@ public interface Evaluator {
     
     public boolean evaluate(float upper_threshold, float lower_threshold);
     
-    public float computeLoad(float load);
+    public float computeLoad(float CpuLoad, float memLoad, float networkLoad);
     
-    public float getDecisionLoad();
+    public float getDecisionCpuLoad();
+    
+    public float getDecisionMemLoad();
+    
+    public float getDecisionNetworkLoad();
     
     public boolean isHighAction();
     

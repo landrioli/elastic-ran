@@ -23,13 +23,29 @@ public interface Thresholds {
     
     public void recalculateLowerThreshold(float x, float y, float z);
     
-    public float getUpperThreshold();
+    public float getUpperCpuThreshold();
     
-    public float getLowerThreshold();
+    public float getLowerCpuThreshold();
     
-    public void setUpperThreshold(float threshold);
+    public void setUpperCpuThreshold(float threshold);
     
-    public void setLowerThreshold(float threshold);
+    public void setLowerCpuThreshold(float threshold);
+    
+    public float getUpperMemThreshold();
+    
+    public float getLowerMemThreshold();
+    
+    public void setUpperMemThreshold(float threshold);
+    
+    public void setLowerMemThreshold(float threshold);
+    
+   public float getUpperNetworkThreshold();
+    
+    public float getLowerNetworkThreshold();
+    
+    public void setUpperNetworkThreshold(float threshold);
+    
+    public void setLowerNetworkThreshold(float threshold);
 
     public void reset(float uppert, float lowert);
     

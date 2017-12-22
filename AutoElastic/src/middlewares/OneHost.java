@@ -56,6 +56,8 @@ public class OneHost {
     private float USED_CPU;
     private float MAX_MEM;
     private float USED_MEM;
+    private float MAX_NETWORK;
+    private float USED_NETWORK;
     private long LAST_MON_TIME;
     private JTextArea log;
     
@@ -157,6 +159,14 @@ public class OneHost {
         return this.MAX_MEM;
     }
     
+    public float getMaxNetwork(){
+        return this.MAX_NETWORK;    
+    }
+    
+    public float getUsedNetwork(){
+        return this.USED_NETWORK;    
+    }
+    
     public long getLastMonTime(){
         return this.LAST_MON_TIME;
     }
@@ -231,6 +241,17 @@ public class OneHost {
         //    vms.get(i).syncInfo();
         //}
         
+        //TODO: Get MAX_USED_NETWORK
+        NodeList MAXNETWORK = conjunto_parametros.getElementsByTagName("XXXXXXXXXXXXXMAX_MEM");
+        Element MNETWORK = (Element)MAXNETWORK.item(0);
+        NodeList textMNETWORK = MNETWORK.getChildNodes();
+        this.MAX_NETWORK = Integer.parseInt(((Node)textMNETWORK.item(0)).getNodeValue().trim());
+        
+        //TODO: Get USED_CURRENT_NETWORK
+        NodeList USENETWORK = conjunto_parametros.getElementsByTagName("XXXXXXXXXXXXXUSED_MEM");
+        Element UNETWORK = (Element)USENETWORK.item(0);
+        NodeList textUNETWORK = UNETWORK.getChildNodes();
+        this.USED_NETWORK = Integer.parseInt(((Node)textUNETWORK.item(0)).getNodeValue().trim());
     }
     
     private String[] getValuesFromXML(String TAG, String SUBTAG) throws ParserConfigurationException, SAXException, IOException{

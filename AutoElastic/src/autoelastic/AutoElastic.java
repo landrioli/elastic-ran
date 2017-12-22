@@ -98,8 +98,12 @@ public class AutoElastic {
                 String Templateid           = doc.getElementsByTagName("TEMPLATE_ID").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String MonitoringInterval   = doc.getElementsByTagName("MON_INTERVAL").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String VmsPorHost           = doc.getElementsByTagName("NUM_VMS").item(0).getChildNodes().item(0).getNodeValue().trim();
-                String ThresholdMax         = doc.getElementsByTagName("UPPER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
-                String ThresholdMin         = doc.getElementsByTagName("LOWER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdCpuMax      = doc.getElementsByTagName("UPPER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdCpuMin      = doc.getElementsByTagName("LOWER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdMemMax      = doc.getElementsByTagName("UPPER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdMemMin      = doc.getElementsByTagName("LOWER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdNetworkMax      = doc.getElementsByTagName("UPPER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdNetworkMin      = doc.getElementsByTagName("LOWER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String MonitoringWindow     = doc.getElementsByTagName("MON_WINDOW").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String CoolDown             = doc.getElementsByTagName("COOL_DOWN").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String ThresholdType        = doc.getElementsByTagName("THRESHOLD_TYPE").item(0).getChildNodes().item(0).getNodeValue().trim();
@@ -135,8 +139,12 @@ public class AutoElastic {
                         ExecutionLogName,
                         Integer.parseInt(Templateid),
                         Integer.parseInt(MonitoringInterval),
-                        Double.parseDouble(ThresholdMax) / 100,
-                        Double.parseDouble(ThresholdMin) / 100,
+                        Double.parseDouble(ThresholdCpuMax) / 100,
+                        Double.parseDouble(ThresholdCpuMin) / 100,
+                        Double.parseDouble(ThresholdMemMax) / 100,
+                        Double.parseDouble(ThresholdMemMin) / 100,
+                        Double.parseDouble(ThresholdNetworkMax) / 100,
+                        Double.parseDouble(ThresholdNetworkMin) / 100,
                         Integer.parseInt(VmsPorHost),
                         Evaluators,
                         ThresholdType,

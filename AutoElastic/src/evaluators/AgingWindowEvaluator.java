@@ -46,11 +46,11 @@ public class AgingWindowEvaluator extends GenericEvaluator{
     @Override
     public boolean evaluate(float upper_threshold, float lower_threshold){        
         //test if the aging is out of the range between the thresholds
-        if (decision_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
+        if (decision_cpu_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
             high_alert = true; 
             low_alert = false; 
             return true;
-        } else if (decision_load < lower_threshold){ //test if we have a violation on the lower threshold after aply the aging
+        } else if (decision_cpu_load < lower_threshold){ //test if we have a violation on the lower threshold after aply the aging
             high_alert = false;
             low_alert = true;
             return true; 
@@ -62,16 +62,16 @@ public class AgingWindowEvaluator extends GenericEvaluator{
     }
     
     @Override
-    public float computeLoad(float load){
-        decision_load = 0;
+    public float computeLoad(float load, float memLoad, float networkLoad){
+        decision_cpu_load = 0;
         observ.add(0, load); //inserte the new value in the first place in the list
         //aply the aging concept if counter > VIEW_SIZE and the average if VIEW_SIZE < counter < 2
         if (observ.size() >= VIEW_SIZE){ // if we do have the minimum of VIEW_SIZE values
-            decision_load = calc_aging(0); //calculate the aging initializing in the first position (the newer value)
+            decision_cpu_load = calc_aging(0); //calculate the aging initializing in the first position (the newer value)
         } else if (observ.size() > 2){ // if the counter is betwen 3 and VIEW_SIZE we will calculate the average to define the factor
-            decision_load = average();
+            decision_cpu_load = average();
         }
-        return decision_load;
+        return decision_cpu_load;
     }
     
     //return the aging value for the VIEW_SIZE window
