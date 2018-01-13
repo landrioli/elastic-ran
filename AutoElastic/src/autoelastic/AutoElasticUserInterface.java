@@ -105,13 +105,21 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jrbLive = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jtfThresholdMax = new javax.swing.JTextField();
+        jtfThresholdCpuMax = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jtfThresholdMin = new javax.swing.JTextField();
+        jtfThresholdCpuMin = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jtfMonitoringWindow = new javax.swing.JTextField();
         jtfCoolDown = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        jtfThresholdMemMax = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jtfThresholdMemMin = new javax.swing.JTextField();
+        jtfThresholdNetworkMax = new javax.swing.JTextField();
+        jtfThresholdNetworkMin = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jtfTemplateid = new javax.swing.JTextField();
@@ -293,7 +301,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                             .addGroup(jpServerLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))))
+                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))))
                     .addGroup(jpServerLayout.createSequentialGroup()
                         .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpServerLayout.createSequentialGroup()
@@ -440,7 +448,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jrbAging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jrbFullAging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jrbGeneric, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,12 +490,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(105, 105, 105)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jrbLive)
                     .addComponent(jLabel17)
                     .addComponent(jrbStatic))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -507,20 +515,20 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel5.setText("Upper Threshold");
 
-        jtfThresholdMax.setToolTipText("Threshold to add virtual machines (0 to 100).");
-        jtfThresholdMax.addFocusListener(new java.awt.event.FocusAdapter() {
+        jtfThresholdCpuMax.setToolTipText("Threshold to add virtual machines (0 to 100).");
+        jtfThresholdCpuMax.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jtfThresholdMaxFocusGained(evt);
+                jtfThresholdCpuMaxFocusGained(evt);
             }
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel6.setText("Lower Threshold");
 
-        jtfThresholdMin.setToolTipText("Threshold to remove virtual machines (0 to 100).");
-        jtfThresholdMin.addFocusListener(new java.awt.event.FocusAdapter() {
+        jtfThresholdCpuMin.setToolTipText("Threshold to remove virtual machines (0 to 100).");
+        jtfThresholdCpuMin.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jtfThresholdMinFocusGained(evt);
+                jtfThresholdCpuMinFocusGained(evt);
             }
         });
 
@@ -537,6 +545,14 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jtfCoolDown.setToolTipText("Number of monitoring observations after a elasticity action that AutoElastic Manager cannot do any new elasticity operation.");
 
         jLabel19.setText("Cool-down Observations");
+
+        jLabel23.setText("Th Up Mem");
+
+        jLabel24.setText("Th Dw Mem");
+
+        jLabel25.setText("Th Up Net");
+
+        jLabel26.setText("Th Dw Net");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -557,9 +573,29 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                            .addComponent(jtfThresholdMin)
-                            .addComponent(jtfThresholdMax))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jtfThresholdCpuMin)
+                            .addComponent(jtfThresholdCpuMax))))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfThresholdNetworkMin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel25)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jtfThresholdNetworkMax, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(9, 9, 9)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel23)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jtfThresholdMemMax, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel24)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jtfThresholdMemMin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -567,19 +603,27 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jtfThresholdMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfThresholdCpuMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfThresholdMemMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jtfThresholdMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfThresholdCpuMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24)
+                    .addComponent(jtfThresholdMemMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25)
+                    .addComponent(jtfThresholdNetworkMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfCoolDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19))
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel26)
+                    .addComponent(jtfThresholdNetworkMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -695,7 +739,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jcbReadOnly)
                     .addComponent(jcbLabMode)
                     .addComponent(jLabel2))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -718,13 +762,13 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             .addGroup(jpParametersLayout.createSequentialGroup()
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpParametersLayout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpParametersLayout.createSequentialGroup()
@@ -736,11 +780,11 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfSla)
                             .addGroup(jpParametersLayout.createSequentialGroup()
-                                .addComponent(jtfLogPath)
+                                .addComponent(jtfLogPath, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                                 .addGap(63, 63, 63)
                                 .addComponent(jLabel20)
                                 .addGap(18, 18, 18)
-                                .addComponent(jtfExecutionLogName)))))
+                                .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jpParametersLayout.setVerticalGroup(
@@ -758,10 +802,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5))
         );
@@ -859,7 +903,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                                 .addComponent(jlMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfMsgPermissionRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                            .addComponent(jtfMsgPermissionRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                             .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfMsgNewResources)))
                     .addComponent(jtfLocalDirTemp))
@@ -990,7 +1034,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpHostsLayout.setHorizontalGroup(
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 721, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbDelHost, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1023,7 +1067,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpGraficoLineTotal.setLayout(jpGraficoLineTotalLayout);
         jpGraficoLineTotalLayout.setHorizontalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGap(0, 411, Short.MAX_VALUE)
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1036,7 +1080,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbGraphicLinePercent.setLayout(jbGraphicLinePercentLayout);
         jbGraphicLinePercentLayout.setHorizontalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 410, Short.MAX_VALUE)
+            .addGap(0, 411, Short.MAX_VALUE)
         );
         jbGraphicLinePercentLayout.setVerticalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1681,13 +1725,13 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jtfMonitoringWindow.selectAll();
     }//GEN-LAST:event_jtfMonitoringWindowFocusGained
 
-    private void jtfThresholdMinFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfThresholdMinFocusGained
-        jtfThresholdMin.selectAll();
-    }//GEN-LAST:event_jtfThresholdMinFocusGained
+    private void jtfThresholdCpuMinFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfThresholdCpuMinFocusGained
+        jtfThresholdCpuMin.selectAll();
+    }//GEN-LAST:event_jtfThresholdCpuMinFocusGained
 
-    private void jtfThresholdMaxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfThresholdMaxFocusGained
-        jtfThresholdMax.selectAll();
-    }//GEN-LAST:event_jtfThresholdMaxFocusGained
+    private void jtfThresholdCpuMaxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfThresholdCpuMaxFocusGained
+        jtfThresholdCpuMax.selectAll();
+    }//GEN-LAST:event_jtfThresholdCpuMaxFocusGained
 
     private void jtfLogPathFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfLogPathFocusGained
         jtfLogPath.selectAll();
@@ -1772,6 +1816,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1851,8 +1899,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
     private javax.swing.JTextField jtfSSHUser;
     private javax.swing.JTextField jtfSla;
     private javax.swing.JTextField jtfTemplateid;
-    private javax.swing.JTextField jtfThresholdMax;
-    private javax.swing.JTextField jtfThresholdMin;
+    private javax.swing.JTextField jtfThresholdCpuMax;
+    private javax.swing.JTextField jtfThresholdCpuMin;
+    private javax.swing.JTextField jtfThresholdMemMax;
+    private javax.swing.JTextField jtfThresholdMemMin;
+    private javax.swing.JTextField jtfThresholdNetworkMax;
+    private javax.swing.JTextField jtfThresholdNetworkMin;
     private javax.swing.JTextField jtfVMM;
     private javax.swing.JTextField jtfVNM;
     private javax.swing.JTextField jtfVmsPorHost;
@@ -1881,8 +1933,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         this.jtfMonitoringInterval.setText("15");
         this.jtfMonitoringWindow.setText("6");
         this.jtfTemplateid.setText("3");
-        this.jtfThresholdMax.setText("80");
-        this.jtfThresholdMin.setText("40");
+        this.jtfThresholdCpuMax.setText("80");
+        this.jtfThresholdCpuMin.setText("40");
+        this.jtfThresholdMemMax.setText("80");
+        this.jtfThresholdMemMin.setText("40");
+        this.jtfThresholdNetworkMax.setText("80");
+        this.jtfThresholdNetworkMin.setText("40");
         this.jtfVmsPorHost.setText("2");
         this.jtfIM.setText("kvm");
         this.jtfVMM.setText("kvm");
@@ -1974,8 +2030,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     escritor.append("  <TEMPLATE_ID>" + this.jtfTemplateid.getText() + "</TEMPLATE_ID>\n");
                     escritor.append("  <MON_INTERVAL>" + this.jtfMonitoringInterval.getText() + "</MON_INTERVAL>\n");
                     escritor.append("  <NUM_VMS>" + this.jtfVmsPorHost.getText() + "</NUM_VMS>\n");
-                    escritor.append("  <UPPER_THRESHOLD>" + this.jtfThresholdMax.getText() + "</UPPER_THRESHOLD>\n");
-                    escritor.append("  <LOWER_THRESHOLD>" + this.jtfThresholdMin.getText() + "</LOWER_THRESHOLD>\n");
+                    escritor.append("  <UPPER_CPU_THRESHOLD>" + this.jtfThresholdCpuMax.getText() + "</UPPER_CPU_THRESHOLD>\n");
+                    escritor.append("  <LOWER_CPU_THRESHOLD>" + this.jtfThresholdCpuMin.getText() + "</LOWER_CPU_THRESHOLD>\n");
+                    escritor.append("  <UPPER_MEM_THRESHOLD>" + this.jtfThresholdMemMax.getText() + "</UPPER_MEM_THRESHOLD>\n");
+                    escritor.append("  <LOWER_MEM_THRESHOLD>" + this.jtfThresholdMemMin.getText() + "</LOWER_MEM_THRESHOLD>\n");
+                    escritor.append("  <UPPER_NETWORK_THRESHOLD>" + this.jtfThresholdNetworkMax.getText() + "</UPPER_NETWORK_THRESHOLD>\n");
+                    escritor.append("  <LOWER_NETWORK_THRESHOLD>" + this.jtfThresholdNetworkMin.getText() + "</LOWER_NETWORK_THRESHOLD>\n");
                     escritor.append("  <MON_WINDOW>" + this.jtfMonitoringWindow.getText() + "</MON_WINDOW>\n");
                     escritor.append("  <COOL_DOWN>" + this.jtfCoolDown.getText() + "</COOL_DOWN>\n");
                     escritor.append("  <THRESHOLD_TYPE>" + this.bgThresholdType.getSelection().getActionCommand() + "</THRESHOLD_TYPE>\n");
@@ -2043,8 +2103,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 this.jtfTemplateid.setText(doc.getElementsByTagName("TEMPLATE_ID").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfMonitoringInterval.setText(doc.getElementsByTagName("MON_INTERVAL").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfVmsPorHost.setText(doc.getElementsByTagName("NUM_VMS").item(0).getChildNodes().item(0).getNodeValue().trim());
-                this.jtfThresholdMax.setText(doc.getElementsByTagName("UPPER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
-                this.jtfThresholdMin.setText(doc.getElementsByTagName("LOWER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdCpuMax.setText(doc.getElementsByTagName("UPPER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdCpuMin.setText(doc.getElementsByTagName("LOWER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfMonitoringWindow.setText(doc.getElementsByTagName("MON_WINDOW").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfCoolDown.setText(doc.getElementsByTagName("COOL_DOWN").item(0).getChildNodes().item(0).getNodeValue().trim());
                 switch (doc.getElementsByTagName("THRESHOLD_TYPE").item(0).getChildNodes().item(0).getNodeValue().trim()){
@@ -2196,8 +2256,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     this.jtfExecutionLogName.getText(),
                     Integer.parseInt(this.jtfTemplateid.getText()),
                     Integer.parseInt(this.jtfMonitoringInterval.getText()),
-                    Double.parseDouble(this.jtfThresholdMax.getText()) / 100,
-                    Double.parseDouble(this.jtfThresholdMin.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdCpuMax.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdCpuMin.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdMemMax.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdMemMin.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdNetworkMax.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdNetworkMin.getText()) / 100,
                     Integer.parseInt(this.jtfVmsPorHost.getText()),
                     this.bgEvaluators.getSelection().getActionCommand(),
                     this.bgThresholdType.getSelection().getActionCommand(),
@@ -2277,8 +2341,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 this.jtfTemplateid.setText(doc.getElementsByTagName("TEMPLATE_ID").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfMonitoringInterval.setText(doc.getElementsByTagName("MON_INTERVAL").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfVmsPorHost.setText(doc.getElementsByTagName("NUM_VMS").item(0).getChildNodes().item(0).getNodeValue().trim());
-                this.jtfThresholdMax.setText(doc.getElementsByTagName("UPPER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
-                this.jtfThresholdMin.setText(doc.getElementsByTagName("LOWER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdCpuMax.setText(doc.getElementsByTagName("UPPER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdCpuMin.setText(doc.getElementsByTagName("LOWER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdMemMax.setText(doc.getElementsByTagName("UPPER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdMemMin.setText(doc.getElementsByTagName("LOWER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdNetworkMax.setText(doc.getElementsByTagName("UPPER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdNetworkMin.setText(doc.getElementsByTagName("LOWER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfMonitoringWindow.setText(doc.getElementsByTagName("MON_WINDOW").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfCoolDown.setText(doc.getElementsByTagName("COOL_DOWN").item(0).getChildNodes().item(0).getNodeValue().trim());
                 switch (doc.getElementsByTagName("THRESHOLD_TYPE").item(0).getChildNodes().item(0).getNodeValue().trim()){
@@ -2366,8 +2434,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         this.jtfExecutionLogName.getText(),
                         Integer.parseInt(this.jtfTemplateid.getText()),
                         Integer.parseInt(this.jtfMonitoringInterval.getText()),
-                        Double.parseDouble(this.jtfThresholdMax.getText()) / 100,
-                        Double.parseDouble(this.jtfThresholdMin.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdCpuMax.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdCpuMin.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdMemMax.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdMemMin.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdNetworkMax.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdNetworkMin.getText()) / 100,
                         Integer.parseInt(this.jtfVmsPorHost.getText()),
                         this.bgEvaluators.getSelection().getActionCommand(),
                         this.bgThresholdType.getSelection().getActionCommand(),

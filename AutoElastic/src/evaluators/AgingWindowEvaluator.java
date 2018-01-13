@@ -44,19 +44,19 @@ public class AgingWindowEvaluator extends GenericEvaluator{
      * @return 
      */
     @Override
-    public boolean evaluate(float upper_threshold, float lower_threshold){        
+    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold){        
         //test if the aging is out of the range between the thresholds
-        if (decision_cpu_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
-            high_alert = true; 
-            low_alert = false; 
+        if (decision_cpu_load > upper_cpu_threshold) { //test if we have a violation on the higher threshold after aply the aging
+            high_cpu_alert = true; 
+            low_cpu_alert = false; 
             return true;
-        } else if (decision_cpu_load < lower_threshold){ //test if we have a violation on the lower threshold after aply the aging
-            high_alert = false;
-            low_alert = true;
+        } else if (decision_cpu_load < lower_cpu_threshold){ //test if we have a violation on the lower threshold after aply the aging
+            high_cpu_alert = false;
+            low_cpu_alert = true;
             return true; 
         } else {
-            high_alert = false;
-            low_alert = false;
+            high_cpu_alert = false;
+            low_cpu_alert = false;
         }
         return false;
     }

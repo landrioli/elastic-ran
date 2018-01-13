@@ -56,8 +56,10 @@ public class OneManager {
     private static String virtual_network_manager;
     private final int cluster_id;
     private final JTextArea log;
-    private final int vms_per_operation;
-    private final int hosts_per_operation = 1;
+    private int vms_per_operation;
+    private int hosts_per_operation = 1;
+    private int percentual_variacao_grao_elastico;
+    private int quatidade_cores_host = 2;
     private final int vmtemplateid;
     private boolean waiting_vms;
     private ArrayList<OneVM> new_vms;
@@ -270,6 +272,22 @@ public class OneManager {
         return false;
     }
     
+    //Metodo que adiciona VMS
+    public boolean increaseResourcesVmsOnly() throws InterruptedException, Exception{
+        waiting_vms = false;
+        new_vms = new ArrayList();
+        for (int i = 0; i < vms_per_operation; i++){
+                new_vms.add(0,new OneVM(vmtemplateid));
+                new_vms.get(0).instantiate(oneClient, log);
+                waiting_vms = true;
+                gera_log(objname, "increaseResources: VM ID " + new_vms.get(0).getID() + " intantiated. (" + (i + 1) + "/" + vms_per_operation + ")");
+        }
+        return waiting_vms;
+    }
+       
+
+    
+    
     /**
      * Remove the host with the highest id and its virtual machines without ask permission
      * @return
@@ -358,6 +376,44 @@ public class OneManager {
             return orpool.removeReadOnlyHost();
         }
         return false;
+    }
+    
+    public void computeElasticGrain(float lastDecisionCpuLoad, float lastDecisionMemLoad, float lastDecisionNetworkLoad,
+            float currentDecisionCpuLoad, float currentDecisionMemLoad, float currentDecisionNetworkLoad)
+    {
+        //If the current measurement is less than the last measurement it is linear INCREASE
+        if((currentDecisionCpuLoad < lastDecisionCpuLoad && (lastDecisionCpuLoad - currentDecisionCpuLoad) > percentual_variacao_grao_elastico) || 
+           (currentDecisionCpuLoad > lastDecisionCpuLoad && (currentDecisionCpuLoad - lastDecisionCpuLoad) > percentual_variacao_grao_elastico)){
+            if((orpool.getAvailableHosts() * quatidade_cores_host) > vms_per_operation)
+                vms_per_operation++;
+        }
+        else if((currentDecisionMemLoad < lastDecisionMemLoad && (lastDecisionMemLoad - currentDecisionMemLoad) > percentual_variacao_grao_elastico) ||
+                (currentDecisionMemLoad > lastDecisionMemLoad && (currentDecisionMemLoad - lastDecisionMemLoad) > percentual_variacao_grao_elastico)){
+            if((orpool.getAvailableHosts() * quatidade_cores_host) > vms_per_operation)
+                vms_per_operation++;
+        }
+        if((currentDecisionNetworkLoad < lastDecisionNetworkLoad && (lastDecisionNetworkLoad - currentDecisionNetworkLoad) > percentual_variacao_grao_elastico) ||
+           (currentDecisionNetworkLoad > lastDecisionNetworkLoad && (currentDecisionNetworkLoad - lastDecisionNetworkLoad) > percentual_variacao_grao_elastico)){
+            if(orpool.getAvailableHosts() > hosts_per_operation)
+                hosts_per_operation++;
+        }        
+        
+        //If the current measurement is less than the last measurement it is linear DECREASE
+        if((currentDecisionCpuLoad < lastDecisionCpuLoad && (lastDecisionCpuLoad - currentDecisionCpuLoad) > percentual_variacao_grao_elastico) || 
+           (currentDecisionCpuLoad > lastDecisionCpuLoad && (currentDecisionCpuLoad - lastDecisionCpuLoad) > percentual_variacao_grao_elastico)){
+            if((orpool.getActiveHosts() * quatidade_cores_host) > vms_per_operation && vms_per_operation > 0)            
+                vms_per_operation--;
+        }
+        else if((currentDecisionMemLoad < lastDecisionMemLoad && (lastDecisionMemLoad - currentDecisionMemLoad) > percentual_variacao_grao_elastico) ||
+                (currentDecisionMemLoad > lastDecisionMemLoad && (currentDecisionMemLoad - lastDecisionMemLoad) > percentual_variacao_grao_elastico)){
+            if((orpool.getActiveHosts() * quatidade_cores_host) > vms_per_operation && vms_per_operation > 0)                        
+                vms_per_operation--;
+        }
+        if((currentDecisionNetworkLoad < lastDecisionNetworkLoad && (lastDecisionNetworkLoad - currentDecisionNetworkLoad) > percentual_variacao_grao_elastico) ||
+           (currentDecisionNetworkLoad > lastDecisionNetworkLoad && (currentDecisionNetworkLoad - lastDecisionNetworkLoad) > percentual_variacao_grao_elastico)){
+            if(orpool.getActiveHosts() > hosts_per_operation && hosts_per_operation > 0)                        
+                hosts_per_operation--;
+        }        
     }
     
     //================================ Métodos não utilizados ========================================
@@ -466,6 +522,6 @@ public class OneManager {
         return online;
     }
 
-
+    
 
 }

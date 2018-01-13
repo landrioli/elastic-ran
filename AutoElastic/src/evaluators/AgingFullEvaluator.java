@@ -30,30 +30,59 @@ public class AgingFullEvaluator extends GenericEvaluator{
     * @return 
     */
     @Override
-    public boolean evaluate(float upper_threshold, float lower_threshold){        
+    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold){        
         //gera_log(objname, "Main|AginFullEvaluator|evaluate: Aging = " + decision_cpu_load);
+        boolean alertHappen = false;
         if (counter >= VIEW_SIZE - 1){
             //test if the aging is out of the range between the thresholds
-            if (decision_cpu_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
-                high_alert = true; 
-                low_alert = false; 
-                return true;
-            } else if (decision_cpu_load < lower_threshold){ //test if we have a violation on the lower threshold after aply the aging
-                high_alert = false;
-                low_alert = true;
-                return true; 
-            } else {
-                high_alert = false;
-                low_alert = false;
+            if (decision_cpu_load > upper_cpu_threshold) { //test if we have a violation on the higher threshold after aply the aging
+                high_cpu_alert = true; 
+                low_cpu_alert = false;
+                alertHappen = true;
+            } else if (decision_cpu_load < lower_cpu_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_cpu_alert = false;
+                low_cpu_alert = true;
+                alertHappen = true;
+            } 
+            if (decision_mem_load > upper_mem_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_mem_alert = false;
+                low_mem_alert = true;
+                alertHappen = true;
+            } else if (decision_mem_load < lower_mem_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_mem_alert = false;
+                low_mem_alert = true;
+                alertHappen = true;
+            } 
+            if (decision_network_load > upper_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_network_alert = false;
+                low_network_alert = true;
+                alertHappen = true;
+            } else if (decision_network_load < lower_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_network_alert = false;
+                low_network_alert = true;
+                alertHappen = true;
+            } 
+            if (!alertHappen){
+                high_cpu_alert = false;
+                low_cpu_alert = false;
+                high_mem_alert = false;
+                low_mem_alert = false;
+                high_network_alert = false;
+                low_network_alert = false;
             }
         } else {
             counter++; //here, counter is used to define the observantions amount
         }
-        return false;  
+        return alertHappen;  
     }    
     
     @Override
     public float computeLoad(float cpuLoad, float memLoad, float networkLoad){
+        //Store the last value for adaptative grain comparisons
+        last_decision_cpu_load = decision_cpu_load;
+        last_decision_mem_load = memLoad;
+        last_decision_network_load = networkLoad;
+        //Update the current values
         decision_cpu_load = (float) (decision_cpu_load * 0.5 + cpuLoad * 0.5);
         decision_mem_load = (float) (decision_mem_load * 0.5 + memLoad * 0.5);
         decision_network_load = (float) (decision_network_load * 0.5 + networkLoad * 0.5);

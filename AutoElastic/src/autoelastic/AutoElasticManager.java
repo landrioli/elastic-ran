@@ -353,18 +353,24 @@ public class AutoElasticManager implements Runnable {
                 recalculate_thresholds = 0;
             }
             /*LOG*/gera_log(objname,"monitoring: Checking threshold violations.");
-            if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold())) && (!resourcesPending) && (cooldowncont < 0)){
+            if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold(), thresholds.getUpperMemThreshold(),
+                    thresholds.getLowerMemThreshold(), thresholds.getUpperNetworkThreshold(), thresholds.getLowerNetworkThreshold())) && 
+                    (!resourcesPending) && 
+                    (cooldowncont < 0)){
                 //analyze the cloud situation and if we have some violation we need deal with this 
                     //and if we are not waiting for new resource allocation we can evaluate the cloud
                     //and if we are not in a cooldown period
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
-                if (evaluator.isHighAction()){//if we have a violation on the high threshold
+                if (evaluator.isHighCpuAction() || evaluator.isHighMemAction()){//if we have a violation on the high threshold
                     /*LOG*/gera_log(objname,"monitoring: Upper threshold violated. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can increase resources
                         /*LOG*/gera_log(objname,"monitoring: Operation authorized by SLA. Instantiating resources.");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.increaseResources();//increase one host and the number of vms informed in the parameters
+                            cloud_manager.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
+                                    evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
+                                    evaluator.getDecisionNetworkLoad());
+                            cloud_manager.increaseResourcesVmsOnly();//increase one host and the number of vms informed in the parameters
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.increaseReadOnlyResources();// add a host in the monitoring pool without add it in the cloud
                         }
@@ -372,12 +378,21 @@ public class AutoElasticManager implements Runnable {
                     } else {
                         /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
-                } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
+                } else if(evaluator.isHighNetworkAction()) {
+                    cloud_manager.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
+                        evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
+                        evaluator.getDecisionNetworkLoad());
+                    cloud_manager.increaseResources();
+                }
+                else if (evaluator.isLowCpuAction() || evaluator.isLowMemAction() || evaluator.isLowNetworkAction()){ //if we have a violation on the low threshold
                     /*LOG*/gera_log(objname,"monitoring: Lower threshold violated. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources
                         /*LOG*/gera_log(objname,"monitoring: Operation authorized by SLA. Releasing resources.");
                         if (!readonly){//if not readonly proceed the normal elasticity
+                            cloud_manager.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
+                                evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
+                                evaluator.getDecisionNetworkLoad());
                             cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.decreaseReadOnlyResources();// remove a host in the monitoring pool without remove it in the cloud
@@ -738,12 +753,14 @@ public class AutoElasticManager implements Runnable {
                 }
                 recalculate_thresholds = 0;
             }
-            if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold())) && (!resourcesPending)){
+            if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold(), thresholds.getUpperMemThreshold(),
+                    thresholds.getLowerMemThreshold(), thresholds.getUpperNetworkThreshold(), thresholds.getLowerNetworkThreshold())) && 
+                    (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 times = times + ";" + System.currentTimeMillis(); //T6-AposAvaliarCarga
                 /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
                 //here we need deal with the violation
-                if (evaluator.isHighAction()){//if we have a violation on the high threshold
+                if (evaluator.isHighCpuAction()){//if we have a violation on the high threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can increase resources
@@ -757,7 +774,7 @@ public class AutoElasticManager implements Runnable {
                         times = times + ";;;;"; //T7 T8 T9 e T10 vazios
                         ///*LOG*/gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
                     }
-                } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
+                } else if (evaluator.isLowCpuAction()){ //if we have a violation on the low threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation                    
                     if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources

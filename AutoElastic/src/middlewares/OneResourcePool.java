@@ -309,6 +309,16 @@ public class OneResourcePool {
         }
     }
     
+    public int getActiveHosts()
+    {
+        return hosts_ativos.size();
+    }
+    
+    public int getAvailableHosts()
+    {
+        return hosts_inativos.size();
+    }
+    
     //>update hosts running in the cloud and its virtual machines
     private void updateResources(Client oc) throws ParserConfigurationException, SAXException, IOException, Exception {
         

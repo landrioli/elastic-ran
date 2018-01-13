@@ -12,7 +12,7 @@ package evaluators;
  */
 public interface Evaluator {
     
-    public boolean evaluate(float upper_threshold, float lower_threshold);
+    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold);
     
     public float computeLoad(float CpuLoad, float memLoad, float networkLoad);
     
@@ -22,9 +22,23 @@ public interface Evaluator {
     
     public float getDecisionNetworkLoad();
     
-    public boolean isHighAction();
+    public float getLastDecisionCpuLoad();
     
-    public boolean isLowAction();
+    public float getLastDecisionMemLoad();
+    
+    public float getLastDecisionNetworkLoad();
+    
+    public boolean isHighCpuAction();
+    
+    public boolean isLowCpuAction();
+    
+    public boolean isHighMemAction();
+    
+    public boolean isLowMemAction();
+    
+    public boolean isHighNetworkAction();
+    
+    public boolean isLowNetworkAction();
     
     public byte whichAction();
     

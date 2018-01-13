@@ -138,7 +138,7 @@
                                       <Group type="102" attributes="0">
                                           <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jtfVMM" pref="262" max="32767" attributes="0"/>
+                                          <Component id="jtfVMM" pref="251" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -370,13 +370,13 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jPanel4" pref="164" max="32767" attributes="0"/>
+                                  <Component id="jPanel4" pref="179" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel3" pref="174" max="32767" attributes="0"/>
+                                  <Component id="jPanel3" pref="384" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel2" pref="152" max="32767" attributes="0"/>
+                                  <Component id="jPanel2" pref="200" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel1" pref="151" max="32767" attributes="0"/>
+                                  <Component id="jPanel1" pref="142" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="jPanel5" max="32767" attributes="0"/>
                               </Group>
@@ -390,11 +390,11 @@
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jtfSla" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Component id="jtfLogPath" max="32767" attributes="0"/>
+                                          <Component id="jtfLogPath" pref="414" max="32767" attributes="0"/>
                                           <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                                           <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="jtfExecutionLogName" max="32767" attributes="0"/>
+                                          <Component id="jtfExecutionLogName" pref="413" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -420,10 +420,10 @@
                           </Group>
                           <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jPanel2" pref="120" max="32767" attributes="0"/>
-                              <Component id="jPanel3" pref="120" max="32767" attributes="0"/>
-                              <Component id="jPanel4" pref="120" max="32767" attributes="0"/>
-                              <Component id="jPanel1" alignment="0" pref="120" max="32767" attributes="0"/>
+                              <Component id="jPanel2" pref="151" max="32767" attributes="0"/>
+                              <Component id="jPanel3" pref="151" max="32767" attributes="0"/>
+                              <Component id="jPanel4" pref="151" max="32767" attributes="0"/>
+                              <Component id="jPanel1" alignment="0" pref="151" max="32767" attributes="0"/>
                               <Component id="jPanel5" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -503,7 +503,7 @@
                                   <Component id="jrbFullAging" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jrbGeneric" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="29" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -596,14 +596,14 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jrbLive" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jrbStatic" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="60" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -695,37 +695,73 @@
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Component id="jtfMonitoringWindow" pref="32" max="32767" attributes="0"/>
-                                          <Component id="jtfThresholdMin" max="32767" attributes="0"/>
-                                          <Component id="jtfThresholdMax" max="32767" attributes="0"/>
+                                          <Component id="jtfThresholdCpuMin" max="32767" attributes="0"/>
+                                          <Component id="jtfThresholdCpuMax" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jtfThresholdNetworkMin" min="-2" pref="39" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="jtfThresholdNetworkMax" min="-2" pref="36" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jtfThresholdMemMax" min="-2" pref="38" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jtfThresholdMemMin" min="-2" pref="35" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfThresholdMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtfThresholdCpuMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtfThresholdMemMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel23" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfThresholdMin" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtfThresholdCpuMin" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel24" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtfThresholdMemMin" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jtfMonitoringWindow" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtfThresholdNetworkMax" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jtfCoolDown" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtfThresholdNetworkMin" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -741,12 +777,12 @@
                         <Property name="text" type="java.lang.String" value="Upper Threshold"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jtfThresholdMax">
+                    <Component class="javax.swing.JTextField" name="jtfThresholdCpuMax">
                       <Properties>
                         <Property name="toolTipText" type="java.lang.String" value="Threshold to add virtual machines (0 to 100)."/>
                       </Properties>
                       <Events>
-                        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfThresholdMaxFocusGained"/>
+                        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfThresholdCpuMaxFocusGained"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel6">
@@ -757,12 +793,12 @@
                         <Property name="text" type="java.lang.String" value="Lower Threshold"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jtfThresholdMin">
+                    <Component class="javax.swing.JTextField" name="jtfThresholdCpuMin">
                       <Properties>
                         <Property name="toolTipText" type="java.lang.String" value="Threshold to remove virtual machines (0 to 100)."/>
                       </Properties>
                       <Events>
-                        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfThresholdMinFocusGained"/>
+                        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfThresholdCpuMinFocusGained"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel8">
@@ -790,6 +826,34 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Cool-down Observations"/>
                       </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="jtfThresholdMemMax">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel23">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Th Up Mem"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel24">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Th Dw Mem"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel25">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Th Up Net"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel26">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Th Dw Net"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="jtfThresholdMemMin">
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="jtfThresholdNetworkMax">
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="jtfThresholdNetworkMin">
                     </Component>
                   </SubComponents>
                 </Container>
@@ -928,7 +992,7 @@
                                   <Component id="jcbLabMode" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="23" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1070,7 +1134,7 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jtfMsgPermissionRemove" alignment="1" pref="251" max="32767" attributes="0"/>
+                                      <Component id="jtfMsgPermissionRemove" alignment="1" pref="107" max="32767" attributes="0"/>
                                       <Component id="jtfMsgWarningRemove" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jtfMsgNewResources" max="32767" attributes="0"/>
                                   </Group>
@@ -1254,7 +1318,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane3" pref="721" max="32767" attributes="0"/>
+                          <Component id="jScrollPane3" pref="724" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jbDelHost" min="-2" pref="92" max="-2" attributes="0"/>
@@ -1414,7 +1478,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="409" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="411" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -1434,7 +1498,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="410" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="411" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
