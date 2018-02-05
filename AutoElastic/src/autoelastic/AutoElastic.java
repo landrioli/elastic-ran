@@ -102,8 +102,8 @@ public class AutoElastic {
                 String ThresholdCpuMin      = doc.getElementsByTagName("LOWER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String ThresholdMemMax      = doc.getElementsByTagName("UPPER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String ThresholdMemMin      = doc.getElementsByTagName("LOWER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
-                String ThresholdNetworkMax      = doc.getElementsByTagName("UPPER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
-                String ThresholdNetworkMin      = doc.getElementsByTagName("LOWER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdNetworkMax  = doc.getElementsByTagName("UPPER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
+                String ThresholdNetworkMin  = doc.getElementsByTagName("LOWER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String MonitoringWindow     = doc.getElementsByTagName("MON_WINDOW").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String CoolDown             = doc.getElementsByTagName("COOL_DOWN").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String ThresholdType        = doc.getElementsByTagName("THRESHOLD_TYPE").item(0).getChildNodes().item(0).getNodeValue().trim();
