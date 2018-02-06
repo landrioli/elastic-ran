@@ -56,14 +56,14 @@ public class OneManager {
     private static String virtual_network_manager;
     private final int cluster_id;
     private final JTextArea log;
-    private int vms_per_operation;
-    private int hosts_per_operation = 1;
-    private int percentual_variacao_grao_elastico;
-    private int quatidade_cores_host = 2;
     private final int vmtemplateid;
     private boolean waiting_vms;
     private ArrayList<OneVM> new_vms;
     private final boolean managehosts;
+    
+    public int vms_per_operation;
+    public int hosts_per_operation = 1;
+    public int quatidade_cores_host = 2;
     
     public OneManager(  String puser, 
                         String ppassword, 
@@ -221,6 +221,13 @@ public class OneManager {
     public int getTotalActiveResources(){
         return orpool.getTotalAtivos();
     }
+    
+    public int getAvailableHosts(){
+        return orpool.getAvailableHosts();
+    }
+    public int getActiveHosts(){
+        return orpool.getActiveHosts();
+    }
 
     /**
      * Create a new host with virtual machines.
@@ -237,7 +244,7 @@ public class OneManager {
                 //hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
                 hostid = orpool.allocateResource(oneClient);      //allocates the host and it will be active after resorces be online
                 if (hostid > 0){
-                    for (int j = 0; j < vms_per_operation; j++) {
+                    for (int j = 0; j < quatidade_cores_host; j++) {
                         new_vms.add(0,new OneVM(vmtemplateid));
                         new_vms.get(0).deploy(oneClient, hostid, log);//aloca vm nesse host
                         //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].getID());
@@ -251,11 +258,11 @@ public class OneManager {
                 }
             }
         } else {
-            for (int i = 0; i < vms_per_operation; i++){
+            for (int i = 0; i < quatidade_cores_host; i++){
                 new_vms.add(0,new OneVM(vmtemplateid));
                 new_vms.get(0).instantiate(oneClient, log);
                 waiting_vms = true;
-                gera_log(objname, "increaseResources: VM ID " + new_vms.get(0).getID() + " intantiated. (" + (i + 1) + "/" + vms_per_operation + ")");
+                gera_log(objname, "increaseResources: VM ID " + new_vms.get(0).getID() + " intantiated. (" + (i + 1) + "/" + quatidade_cores_host + ")");
             }
         }
         return waiting_vms;
@@ -264,10 +271,16 @@ public class OneManager {
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
         gera_log(objname, "decreaseResources: Waiting for application permission to decrease resources.");
-        if (messenger.notifyDecrease(orpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
-            while(!messenger.canDecrease()){}
-            gera_log(objname, "decreaseResources: Permission received.");
-            return orpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
+        int qtdHostsParaRemocao = hosts_per_operation;
+        gera_log(objname, "decreaseResources: Quantidade de Hosts a serem removidos: " + qtdHostsParaRemocao + " | com essas VMS cada:" + quatidade_cores_host);
+        int hostsRemovidos = 0;
+        while(hostsRemovidos < qtdHostsParaRemocao ){
+            if (messenger.notifyDecrease(orpool.getLastActiveResources(quatidade_cores_host, hosts_per_operation))){
+                while(!messenger.canDecrease()){}
+                gera_log(objname, "decreaseResources: Permission received.");
+                return orpool.removeResource(oneClient, quatidade_cores_host, hosts_per_operation);//remove último host criado e suas vms também
+            }
+            hostsRemovidos++;
         }
         return false;
     }
@@ -376,44 +389,6 @@ public class OneManager {
             return orpool.removeReadOnlyHost();
         }
         return false;
-    }
-    
-    public void computeElasticGrain(float lastDecisionCpuLoad, float lastDecisionMemLoad, float lastDecisionNetworkLoad,
-            float currentDecisionCpuLoad, float currentDecisionMemLoad, float currentDecisionNetworkLoad)
-    {
-        //If the current measurement is less than the last measurement it is linear INCREASE
-        if((currentDecisionCpuLoad < lastDecisionCpuLoad && (lastDecisionCpuLoad - currentDecisionCpuLoad) > percentual_variacao_grao_elastico) || 
-           (currentDecisionCpuLoad > lastDecisionCpuLoad && (currentDecisionCpuLoad - lastDecisionCpuLoad) > percentual_variacao_grao_elastico)){
-            if((orpool.getAvailableHosts() * quatidade_cores_host) > vms_per_operation)
-                vms_per_operation++;
-        }
-        else if((currentDecisionMemLoad < lastDecisionMemLoad && (lastDecisionMemLoad - currentDecisionMemLoad) > percentual_variacao_grao_elastico) ||
-                (currentDecisionMemLoad > lastDecisionMemLoad && (currentDecisionMemLoad - lastDecisionMemLoad) > percentual_variacao_grao_elastico)){
-            if((orpool.getAvailableHosts() * quatidade_cores_host) > vms_per_operation)
-                vms_per_operation++;
-        }
-        if((currentDecisionNetworkLoad < lastDecisionNetworkLoad && (lastDecisionNetworkLoad - currentDecisionNetworkLoad) > percentual_variacao_grao_elastico) ||
-           (currentDecisionNetworkLoad > lastDecisionNetworkLoad && (currentDecisionNetworkLoad - lastDecisionNetworkLoad) > percentual_variacao_grao_elastico)){
-            if(orpool.getAvailableHosts() > hosts_per_operation)
-                hosts_per_operation++;
-        }        
-        
-        //If the current measurement is less than the last measurement it is linear DECREASE
-        if((currentDecisionCpuLoad < lastDecisionCpuLoad && (lastDecisionCpuLoad - currentDecisionCpuLoad) > percentual_variacao_grao_elastico) || 
-           (currentDecisionCpuLoad > lastDecisionCpuLoad && (currentDecisionCpuLoad - lastDecisionCpuLoad) > percentual_variacao_grao_elastico)){
-            if((orpool.getActiveHosts() * quatidade_cores_host) > vms_per_operation && vms_per_operation > 0)            
-                vms_per_operation--;
-        }
-        else if((currentDecisionMemLoad < lastDecisionMemLoad && (lastDecisionMemLoad - currentDecisionMemLoad) > percentual_variacao_grao_elastico) ||
-                (currentDecisionMemLoad > lastDecisionMemLoad && (currentDecisionMemLoad - lastDecisionMemLoad) > percentual_variacao_grao_elastico)){
-            if((orpool.getActiveHosts() * quatidade_cores_host) > vms_per_operation && vms_per_operation > 0)                        
-                vms_per_operation--;
-        }
-        if((currentDecisionNetworkLoad < lastDecisionNetworkLoad && (lastDecisionNetworkLoad - currentDecisionNetworkLoad) > percentual_variacao_grao_elastico) ||
-           (currentDecisionNetworkLoad > lastDecisionNetworkLoad && (currentDecisionNetworkLoad - lastDecisionNetworkLoad) > percentual_variacao_grao_elastico)){
-            if(orpool.getActiveHosts() > hosts_per_operation && hosts_per_operation > 0)                        
-                hosts_per_operation--;
-        }        
     }
     
     //================================ Métodos não utilizados ========================================

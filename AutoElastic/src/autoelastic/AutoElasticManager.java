@@ -1,5 +1,7 @@
 package autoelastic;
 
+import ElasticGrain.GrainEvaluator;
+import ElasticGrain.GrainFunctionEnum;
 import communication.SSHClient;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -69,6 +71,7 @@ public class AutoElasticManager implements Runnable {
     private WSAgreementSLA sla;         //sla que será utilizado pelo gerenciador para monitoramento
     private Evaluator evaluator;        //avaliador para saber se operações devem ser tomadas ou não
     private Thresholds thresholds;      //object to manage the thresholds
+    private GrainEvaluator grainEvaluator;
     
     private final String objname = "autoelastic.AutoElastic"; //name of the object to use in log information
     private static String frontend;
@@ -114,6 +117,9 @@ public class AutoElasticManager implements Runnable {
     private static int sshserverport;
     private static boolean cmdmode;
     private SSHClient ssh;
+    private boolean usarGraoElastico;
+    private double percentualVariacaoGraoElastico;
+    private String funcaoCalculoTamanhoGrao;
     
     public AutoElasticManager(JPanel pgraphic1, JPanel pgraphic2, boolean commandlinemode){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -196,7 +202,10 @@ public class AutoElasticManager implements Runnable {
                        boolean pmanagehosts,
                        int pcooldown,
                        int pserverport,
-                       int psshserverport){
+                       int psshserverport,
+                       boolean pusarGraoElastico, 
+                       double ppercentualVariacaoGraoElastico, 
+                       String pfuncaoCalculoTamanhoGrao){
         
         frontend = pfrontend;
         usuario = pusuario;
@@ -240,6 +249,9 @@ public class AutoElasticManager implements Runnable {
         cooldown = pcooldown;
         serverport = pserverport;
         sshserverport = psshserverport;
+        usarGraoElastico = pusarGraoElastico;
+        percentualVariacaoGraoElastico = ppercentualVariacaoGraoElastico;
+        funcaoCalculoTamanhoGrao = pfuncaoCalculoTamanhoGrao;
         gera_log(objname,"Constructing.");
     }
 
@@ -367,7 +379,7 @@ public class AutoElasticManager implements Runnable {
                     if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can increase resources
                         /*LOG*/gera_log(objname,"monitoring: Operation authorized by SLA. Instantiating resources.");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
+                            grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                                     evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
                                     evaluator.getDecisionNetworkLoad());
                             cloud_manager.increaseResourcesVmsOnly();//increase one host and the number of vms informed in the parameters
@@ -379,7 +391,7 @@ public class AutoElasticManager implements Runnable {
                         /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
                 } else if(evaluator.isHighNetworkAction()) {
-                    cloud_manager.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
+                    grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                         evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
                         evaluator.getDecisionNetworkLoad());
                     cloud_manager.increaseResources();
@@ -390,7 +402,7 @@ public class AutoElasticManager implements Runnable {
                     if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources
                         /*LOG*/gera_log(objname,"monitoring: Operation authorized by SLA. Releasing resources.");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
+                            grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                                 evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
                                 evaluator.getDecisionNetworkLoad());
                             cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
@@ -527,6 +539,17 @@ public class AutoElasticManager implements Runnable {
         
         if (!monitoring){return false;}//return if not monitoring
         export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Tempo Milisegundos,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
+
+        switch (funcaoCalculoTamanhoGrao){
+            case "linear": 
+                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Linear, usarGraoElastico, percentualVariacaoGraoElastico);
+                break;
+            case "quadratico": 
+                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Quadratico, usarGraoElastico, percentualVariacaoGraoElastico);
+                break;
+            case "exponencial":
+                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Exponencial, usarGraoElastico, percentualVariacaoGraoElastico);
+        }
         
         return true;
     }

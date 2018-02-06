@@ -103,6 +103,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jrbStatic = new javax.swing.JRadioButton();
         jrbLive = new javax.swing.JRadioButton();
+        jtfFuncaoCalculaGrao = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jtfThresholdCpuMax = new javax.swing.JTextField();
@@ -120,6 +121,9 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jtfThresholdMemMin = new javax.swing.JTextField();
         jtfThresholdNetworkMax = new javax.swing.JTextField();
         jtfThresholdNetworkMin = new javax.swing.JTextField();
+        jtfPercentualGrao = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jtfTemplateid = new javax.swing.JTextField();
@@ -127,6 +131,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jtfMonitoringInterval = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtfVmsPorHost = new javax.swing.JTextField();
+        jtfEnableGraoAdaptativo = new javax.swing.JCheckBox();
         jLabel20 = new javax.swing.JLabel();
         jtfExecutionLogName = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
@@ -301,7 +306,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                             .addGroup(jpServerLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))))
+                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))))
                     .addGroup(jpServerLayout.createSequentialGroup()
                         .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpServerLayout.createSequentialGroup()
@@ -373,7 +378,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbBuscarSLA.setForeground(new java.awt.Color(255, 255, 255));
         jbBuscarSLA.setText("SLA");
         jbBuscarSLA.setContentAreaFilled(false);
-        jbBuscarSLA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbBuscarSLA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbBuscarSLA.setFocusable(false);
         jbBuscarSLA.setOpaque(true);
         jbBuscarSLA.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -496,6 +501,9 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(jrbStatic))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jtfFuncaoCalculaGrao, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,14 +514,16 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 .addComponent(jrbStatic)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jrbLive)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jtfFuncaoCalculaGrao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(180, 104));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel5.setText("Upper Threshold");
+        jLabel5.setText("Th CPU Up");
 
         jtfThresholdCpuMax.setToolTipText("Threshold to add virtual machines (0 to 100).");
         jtfThresholdCpuMax.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -523,7 +533,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel6.setText("Lower Threshold");
+        jLabel6.setText("Th CPU Dw");
 
         jtfThresholdCpuMin.setToolTipText("Threshold to remove virtual machines (0 to 100).");
         jtfThresholdCpuMin.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -554,48 +564,63 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
 
         jLabel26.setText("Th Dw Net");
 
+        jLabel27.setText("Percentual Grao Adapt.");
+
+        jLabel28.setText("Função Calcula Grao");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jtfCoolDown, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtfCoolDown, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                                    .addComponent(jtfThresholdCpuMin)
+                                    .addComponent(jtfThresholdCpuMax))))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                            .addComponent(jtfThresholdCpuMin)
-                            .addComponent(jtfThresholdCpuMax))))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel23)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtfThresholdMemMax, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel24)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtfThresholdMemMin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel25)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel26)
+                                        .addGap(7, 7, 7)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jtfThresholdNetworkMin)
+                                    .addComponent(jtfThresholdNetworkMax, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel26)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfThresholdNetworkMin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel25)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jtfThresholdNetworkMax, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(9, 9, 9)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel23)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jtfThresholdMemMax, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel24)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jtfThresholdMemMin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                        .addComponent(jLabel27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jtfPercentualGrao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel28)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -624,7 +649,12 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jLabel19)
                     .addComponent(jLabel26)
                     .addComponent(jtfThresholdNetworkMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfPercentualGrao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27)
+                    .addComponent(jLabel28))
+                .addContainerGap())
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -660,6 +690,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             }
         });
 
+        jtfEnableGraoAdaptativo.setText("Grao Adaptativo");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -667,14 +699,17 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jtfMonitoringInterval, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                    .addComponent(jtfTemplateid, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtfVmsPorHost, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jtfMonitoringInterval, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                            .addComponent(jtfTemplateid, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfVmsPorHost, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addComponent(jtfEnableGraoAdaptativo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -692,7 +727,9 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel7)
                     .addComponent(jtfVmsPorHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jtfEnableGraoAdaptativo)
+                .addContainerGap())
         );
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -762,13 +799,13 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             .addGroup(jpParametersLayout.createSequentialGroup()
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpParametersLayout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpParametersLayout.createSequentialGroup()
@@ -780,11 +817,11 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfSla)
                             .addGroup(jpParametersLayout.createSequentialGroup()
-                                .addComponent(jtfLogPath, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                                .addComponent(jtfLogPath, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                                 .addGap(63, 63, 63)
                                 .addComponent(jLabel20)
                                 .addGap(18, 18, 18)
-                                .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)))))
+                                .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jpParametersLayout.setVerticalGroup(
@@ -803,7 +840,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -903,7 +940,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                                 .addComponent(jlMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfMsgPermissionRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                            .addComponent(jtfMsgPermissionRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                             .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfMsgNewResources)))
                     .addComponent(jtfLocalDirTemp))
@@ -979,7 +1016,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbAddHost.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbAddHost.setText("+");
         jbAddHost.setContentAreaFilled(false);
-        jbAddHost.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbAddHost.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbAddHost.setFocusable(false);
         jbAddHost.setOpaque(true);
         jbAddHost.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1006,7 +1043,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbDelHost.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbDelHost.setText("-");
         jbDelHost.setContentAreaFilled(false);
-        jbDelHost.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbDelHost.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbDelHost.setFocusable(false);
         jbDelHost.setOpaque(true);
         jbDelHost.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1034,7 +1071,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpHostsLayout.setHorizontalGroup(
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbDelHost, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1067,7 +1104,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpGraficoLineTotal.setLayout(jpGraficoLineTotalLayout);
         jpGraficoLineTotalLayout.setHorizontalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
+            .addGap(0, 422, Short.MAX_VALUE)
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1080,7 +1117,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbGraphicLinePercent.setLayout(jbGraphicLinePercentLayout);
         jbGraphicLinePercentLayout.setHorizontalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
+            .addGap(0, 422, Short.MAX_VALUE)
         );
         jbGraphicLinePercentLayout.setVerticalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1111,7 +1148,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbLimpar.setForeground(new java.awt.Color(255, 255, 255));
         jbLimpar.setText("Reset");
         jbLimpar.setContentAreaFilled(false);
-        jbLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbLimpar.setFocusable(false);
         jbLimpar.setOpaque(true);
         jbLimpar.setPreferredSize(new java.awt.Dimension(81, 23));
@@ -1141,7 +1178,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbExecutar.setText("Execute");
         jbExecutar.setBorder(null);
         jbExecutar.setContentAreaFilled(false);
-        jbExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbExecutar.setFocusable(false);
         jbExecutar.setOpaque(true);
         jbExecutar.setPreferredSize(new java.awt.Dimension(81, 23));
@@ -1171,7 +1208,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbParar.setText("Stop");
         jbParar.setBorder(null);
         jbParar.setContentAreaFilled(false);
-        jbParar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbParar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbParar.setEnabled(false);
         jbParar.setFocusable(false);
         jbParar.setOpaque(true);
@@ -1229,7 +1266,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbSaleLog.setForeground(new java.awt.Color(255, 255, 255));
         jbSaleLog.setText("Save LOG");
         jbSaleLog.setContentAreaFilled(false);
-        jbSaleLog.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbSaleLog.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbSaleLog.setFocusable(false);
         jbSaleLog.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jbSaleLog.setOpaque(true);
@@ -1259,7 +1296,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbAbout.setText("About");
         jbAbout.setToolTipText("");
         jbAbout.setContentAreaFilled(false);
-        jbAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbAbout.setFocusable(false);
         jbAbout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jbAbout.setOpaque(true);
@@ -1285,14 +1322,14 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("AutoElastic Manager");
+        jLabel18.setText("ElasticRAN  Orchestrator");
 
         jbMinimize.setBackground(new java.awt.Color(51, 204, 255));
         jbMinimize.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbMinimize.setForeground(new java.awt.Color(102, 102, 102));
         jbMinimize.setText("_");
         jbMinimize.setContentAreaFilled(false);
-        jbMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbMinimize.setFocusable(false);
         jbMinimize.setOpaque(true);
         jbMinimize.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1320,7 +1357,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbExit.setForeground(new java.awt.Color(102, 102, 102));
         jbExit.setText("X");
         jbExit.setContentAreaFilled(false);
-        jbExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbExit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbExit.setFocusable(false);
         jbExit.setMaximumSize(new java.awt.Dimension(49, 39));
         jbExit.setMinimumSize(new java.awt.Dimension(49, 39));
@@ -1351,7 +1388,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Save CONFIG");
         jButton1.setContentAreaFilled(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton1.setFocusable(false);
         jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton1.setOpaque(true);
@@ -1366,7 +1403,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Load CONFIG");
         jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.setFocusable(false);
         jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton2.setOpaque(true);
@@ -1820,6 +1857,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1878,11 +1917,13 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
     private javax.swing.JTextArea jtaLog;
     private javax.swing.JTextField jtfClusterId;
     private javax.swing.JTextField jtfCoolDown;
+    private javax.swing.JCheckBox jtfEnableGraoAdaptativo;
     private javax.swing.JTextField jtfExecutionLogName;
     private javax.swing.JTextField jtfFrontEndPassword;
     private javax.swing.JTextField jtfFrontEndPort;
     private javax.swing.JTextField jtfFrontEndUser;
     private javax.swing.JTextField jtfFrontend;
+    private javax.swing.JTextField jtfFuncaoCalculaGrao;
     private javax.swing.JTextField jtfIM;
     private javax.swing.JTextField jtfLocalDirTemp;
     private javax.swing.JTextField jtfLogPath;
@@ -1891,6 +1932,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
     private javax.swing.JTextField jtfMsgNewResources;
     private javax.swing.JTextField jtfMsgPermissionRemove;
     private javax.swing.JTextField jtfMsgWarningRemove;
+    private javax.swing.JTextField jtfPercentualGrao;
     private javax.swing.JTextField jtfRemoteDirSource;
     private javax.swing.JTextField jtfRemoteDirTarget;
     private javax.swing.JTextField jtfSSHPassword;
@@ -2043,6 +2085,9 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     escritor.append("  <LAB_MODE>" + this.jcbLabMode.isSelected() + "</LAB_MODE>\n");
                     escritor.append("  <READ_ONLY>" + this.jcbReadOnly.isSelected() + "</READ_ONLY>\n");
                     escritor.append("  <MANAGE_HOSTS>" + this.jcbManageHosts.isSelected() + "</MANAGE_HOSTS>\n");
+                    escritor.append("  <USAR_GRAO_ELASTICO>" + this.jtfEnableGraoAdaptativo.isSelected() + "</USAR_GRAO_ELASTICO>\n");
+                    escritor.append("  <VARIACAO_GRAO_ELASTICO>" + this.jtfPercentualGrao.getText() + "</VARIACAO_GRAO_ELASTICO>\n");
+                    escritor.append("  <FUNCAO_CALCULO_TAMANHO_GRAO>" + this.jtfFuncaoCalculaGrao.getText() + "</FUNCAO_CALCULO_TAMANHO_GRAO>\n");
                 escritor.append(" </PARAMETERS>\n");
                     escritor.append("  <DATA_SERVER_ADDRESS>" + this.jtfSSHServer.getText() + "</DATA_SERVER_ADDRESS>\n");
                     escritor.append("  <DATA_SERVER_PORT>" + this.jtfSSHPort.getText() + "</DATA_SERVER_PORT>\n");
@@ -2105,6 +2150,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 this.jtfVmsPorHost.setText(doc.getElementsByTagName("NUM_VMS").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfThresholdCpuMax.setText(doc.getElementsByTagName("UPPER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfThresholdCpuMin.setText(doc.getElementsByTagName("LOWER_CPU_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdMemMax.setText(doc.getElementsByTagName("UPPER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdMemMin.setText(doc.getElementsByTagName("LOWER_MEM_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdNetworkMax.setText(doc.getElementsByTagName("UPPER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdNetworkMin.setText(doc.getElementsByTagName("LOWER_NETWORK_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfMonitoringWindow.setText(doc.getElementsByTagName("MON_WINDOW").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfCoolDown.setText(doc.getElementsByTagName("COOL_DOWN").item(0).getChildNodes().item(0).getNodeValue().trim());
                 switch (doc.getElementsByTagName("THRESHOLD_TYPE").item(0).getChildNodes().item(0).getNodeValue().trim()){
@@ -2156,6 +2205,15 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 } else {
                     this.jcbManageHosts.setSelected(false);
                 }
+                
+                if (doc.getElementsByTagName("USAR_GRAO_ELASTICO").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true")){
+                    this.jtfEnableGraoAdaptativo.setSelected(true);
+                } else {
+                    this.jtfEnableGraoAdaptativo.setSelected(false);
+                }
+                this.jtfPercentualGrao.setText(doc.getElementsByTagName("VARIACAO_GRAO_ELASTICO").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfFuncaoCalculaGrao.setText(doc.getElementsByTagName("FUNCAO_CALCULO_TAMANHO_GRAO").item(0).getChildNodes().item(0).getNodeValue().trim());
+                
                 //communication
                 this.jtfSSHServer.setText(doc.getElementsByTagName("DATA_SERVER_ADDRESS").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfSSHPort.setText(doc.getElementsByTagName("DATA_SERVER_PORT").item(0).getChildNodes().item(0).getNodeValue().trim());
@@ -2285,7 +2343,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     this.jcbManageHosts.isSelected(),
                     Integer.parseInt(this.jtfCoolDown.getText()),
                     Integer.parseInt(this.jtfFrontEndPort.getText()),
-                    Integer.parseInt(this.jtfSSHPort.getText())
+                    Integer.parseInt(this.jtfSSHPort.getText()),
+                    this.jtfEnableGraoAdaptativo.isSelected(),
+                    Double.parseDouble(this.jtfPercentualGrao.getText()),
+                    this.jtfFuncaoCalculaGrao.getText()
             );
 
             if (this.jcbLabMode.isSelected()){
@@ -2463,7 +2524,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         this.jcbManageHosts.isSelected(),
                         Integer.parseInt(this.jtfCoolDown.getText()),
                         Integer.parseInt(this.jtfFrontEndPort.getText()),
-                        Integer.parseInt(this.jtfSSHPort.getText())
+                        Integer.parseInt(this.jtfSSHPort.getText()),
+                        this.jtfEnableGraoAdaptativo.isSelected(),
+                        Double.parseDouble(this.jtfPercentualGrao.getText()),
+                        this.jtfFuncaoCalculaGrao.getText()
                 );
                 //coloco o gerenciador dentro de uma Thread e inicio ele
                 th_gerenciador = new Thread(autoelastic_manager);
