@@ -102,7 +102,7 @@ public class OneManager {
         vmtemplateid = pvmtemplateid;
         waiting_vms = false;
         messenger = new OneCommunicator(psshserver, psshuser, psshpassword, plog);
-        messenger.setParameters(pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource, premotedirtarget);
+        messenger.setParameters(pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource, premotedirtarget,vms_per_operation, hosts_per_operation);
         server_port = pserverport;
     }
     

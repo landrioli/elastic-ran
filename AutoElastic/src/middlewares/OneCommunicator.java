@@ -59,6 +59,9 @@ public class OneCommunicator {
     private String localdir_temp_files = "C:\\temp\\autoelastic\\";
     private SSHClient ssh;
     private final boolean CREATELOCALFILE = false;
+    private String notify_grao_size = "graoSize.txt";
+    private int graoVmsOperacao;
+    private int graoHostsOperacao;
     
     public OneCommunicator(String pserver, String puser, String ppassword, JTextArea plog){
         server = pserver;
@@ -75,7 +78,9 @@ public class OneCommunicator {
                         String pmsgnewresources, 
                         String plocaldirtemp, 
                         String premotedirsource, 
-                        String premotedirtarget
+                        String premotedirtarget,
+                        int pgraoVmsOperacao,
+                        int pgraoHostsOperacao
     ){
         remotedir_file_source = premotedirsource;
         remotedir_file_target = premotedirtarget;
@@ -83,6 +88,9 @@ public class OneCommunicator {
         permission_decrease_file_name = pmsgcanremove;
         notify_increase_file_name = pmsgnewresources;
         localdir_temp_files = plocaldirtemp;
+        graoVmsOperacao = pgraoVmsOperacao;
+        graoHostsOperacao = pgraoHostsOperacao;
+        
         //gera_log(objname,
         //          "remotedir_file_source\n" + remotedir_file_source 
         //        + "remotedir_file_target\n" + remotedir_file_target
@@ -119,6 +127,11 @@ public class OneCommunicator {
         } else {
             if (ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message)){
                 //gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
+                if (ssh.fileExists(notify_grao_size, remotedir_file_target)){
+                    ssh.deleteFile(notify_grao_size, remotedir_file_target);
+                }
+                String messageGrain = graoVmsOperacao + "\n";
+                ssh.createFile(notify_grao_size, remotedir_file_target, messageGrain);
                 return true;
             } else {
                 //gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
@@ -156,6 +169,7 @@ public class OneCommunicator {
                 BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
                 escritor.write(file_content + "\n");
                 escritor.flush();
+
                 //if (envia_arquivo(arquivo.getAbsolutePath())) {
                 if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
                     //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
@@ -168,6 +182,11 @@ public class OneCommunicator {
             }
         } else {
             if (ssh.createFile(notify_increase_file_name, remotedir_file_target, file_content)){
+                if (ssh.fileExists(notify_grao_size, remotedir_file_target)){
+                    ssh.deleteFile(notify_grao_size, remotedir_file_target);
+                }
+                String messageGrain = graoVmsOperacao + "\n" + graoHostsOperacao + "\n";
+                ssh.createFile(notify_grao_size, remotedir_file_target, messageGrain);
                     //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
                     return true;
                 } else {
