@@ -80,8 +80,8 @@ public class AgingFullEvaluator extends GenericEvaluator{
     public float computeLoad(float cpuLoad, float memLoad, float networkLoad){
         //Store the last value for adaptative grain comparisons
         last_decision_cpu_load = decision_cpu_load;
-        last_decision_mem_load = memLoad;
-        last_decision_network_load = networkLoad;
+        last_decision_mem_load = decision_mem_load;
+        last_decision_network_load = decision_network_load;
         //Update the current values
         decision_cpu_load = (float) (decision_cpu_load * 0.5 + cpuLoad * 0.5);
         decision_mem_load = (float) (decision_mem_load * 0.5 + memLoad * 0.5);
