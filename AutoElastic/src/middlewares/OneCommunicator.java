@@ -125,17 +125,10 @@ public class OneCommunicator {
             //aqui eu deveria ler o diretorio compartilhado para verificar se posso ou nao liberar
             //Thread.sleep(60000); //mas como nao implementei espero um tempo
         } else {
-            if (ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message)){
-                //gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
-                if (ssh.fileExists(notify_grao_size, remotedir_file_target)){
-                    ssh.deleteFile(notify_grao_size, remotedir_file_target);
-                }
-                String messageGrain = graoVmsOperacao + "\n";
-                ssh.createFile(notify_grao_size, remotedir_file_target, messageGrain);
-                return true;
-            } else {
-                //gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
+            for (int i = 0; i < graoVmsOperacao; i++) {
+                ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message);
             }
+            return true;
         }
         return false;
     }
@@ -182,16 +175,13 @@ public class OneCommunicator {
             }
         } else {
             if (ssh.createFile(notify_increase_file_name, remotedir_file_target, file_content)){
-                if (ssh.fileExists(notify_grao_size, remotedir_file_target)){
-                    ssh.deleteFile(notify_grao_size, remotedir_file_target);
+                for (int i = 0; i < graoVmsOperacao; i++) {
+                    ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message);
                 }
-                String messageGrain = graoVmsOperacao + "\n" + graoHostsOperacao + "\n";
-                ssh.createFile(notify_grao_size, remotedir_file_target, messageGrain);
-                    //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
-                    return true;
-                } else {
-                    //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
-                }
+                return true;
+            } else {
+                //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
+            }
         }
         return false;
     }
