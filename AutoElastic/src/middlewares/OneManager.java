@@ -277,20 +277,33 @@ public class OneManager {
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
         gera_log(objname, "decreaseResources: Waiting for application permission to decrease resources.");
-        int qtdHostsParaRemocao = hosts_per_operation;
-        gera_log(objname, "decreaseResources: Quantidade de Hosts a serem removidos: " + qtdHostsParaRemocao + " | com essas VMS cada:" + quatidade_cores_host);
-        int hostsRemovidos = 0;
-        while(hostsRemovidos < qtdHostsParaRemocao ){
-            if (messenger.notifyDecrease(orpool.getLastActiveResources(quatidade_cores_host, hosts_per_operation))){
+        int qtdVmsParaRemocao = hosts_per_operation * quatidade_cores_host;
+        gera_log(objname, "decreaseResources: Quantidade de Hosts a serem removidos: " + hosts_per_operation + " | com essas VMS cada:" + quatidade_cores_host);
+        int vmsRemovidas = 0;
+        while(vmsRemovidas < qtdVmsParaRemocao){
+            var messageIpHostToBeRemoved = orpool.getLastActiveResource(hosts_per_operation, vms_per_operation);
+            if (messenger.notifyDecrease(messageIpHostToBeRemoved)){
                 while(!messenger.canDecrease()){}
                 gera_log(objname, "decreaseResources: Permission received.");
-                return orpool.removeResource(oneClient, quatidade_cores_host, hosts_per_operation);//remove último host criado e suas vms também
+                orpool.removeResource(oneClient, 1, hosts_per_operation);
             }
-            hostsRemovidos++;
+            vmsRemovidas++;
         }
-        return false;
-    }
-    
+        return true;
+    }    
+            
+    public boolean increaseResourcesHostsOnly() throws InterruptedException, Exception{
+        waiting_vms = false;
+        new_vms = new ArrayList();
+        int quantidadeDeVmsParaInstanciarHosts = hosts_per_operation * quatidade_cores_host; 
+        for (int i = 0; i < quantidadeDeVmsParaInstanciarHosts; i++){
+                new_vms.add(0,new OneVM(vmtemplateid));
+                new_vms.get(0).instantiate(oneClient, log);
+                waiting_vms = true;
+                gera_log(objname, "increaseResourcesHosts() - VM ID " + new_vms.get(0).getID() + " intantiated. (" + (i + 1) + "/" + vms_per_operation + ")");
+        }
+        return waiting_vms;
+    }        
     //Metodo que adiciona VMS
     public boolean increaseResourcesVmsOnly() throws InterruptedException, Exception{
         waiting_vms = false;
@@ -347,7 +360,7 @@ public class OneManager {
             }
             waiting_vms = false;
             //gera_log(objname,"Notifica criação de novos recursos...");
-            messenger.notifyNewResources(message);
+            messenger.notifyNewResources(new_vms);
             
             //now lets activate this new resources in the monitoring
             if(managehosts){ //if we are monitoring hosts then lets enable the added hosts

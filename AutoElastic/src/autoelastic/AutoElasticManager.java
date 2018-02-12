@@ -120,6 +120,7 @@ public class AutoElasticManager implements Runnable {
     private boolean usarGraoElastico;
     private double percentualVariacaoGraoElastico;
     private String funcaoCalculoTamanhoGrao;
+    private boolean usarElasticidadeMultinivel;
     
     public AutoElasticManager(JPanel pgraphic1, JPanel pgraphic2, boolean commandlinemode){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -205,7 +206,8 @@ public class AutoElasticManager implements Runnable {
                        int psshserverport,
                        boolean pusarGraoElastico, 
                        double ppercentualVariacaoGraoElastico, 
-                       String pfuncaoCalculoTamanhoGrao){
+                       String pfuncaoCalculoTamanhoGrao,
+                       boolean pusarElasticidadeMultinivel){
         
         frontend = pfrontend;
         usuario = pusuario;
@@ -252,6 +254,7 @@ public class AutoElasticManager implements Runnable {
         usarGraoElastico = pusarGraoElastico;
         percentualVariacaoGraoElastico = ppercentualVariacaoGraoElastico;
         funcaoCalculoTamanhoGrao = pfuncaoCalculoTamanhoGrao;
+        usarElasticidadeMultinivel = pusarElasticidadeMultinivel;
         gera_log(objname,"Constructing.");
     }
 
@@ -390,13 +393,13 @@ public class AutoElasticManager implements Runnable {
                     } else {
                         /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
-                } else if(evaluator.isHighNetworkAction()) {
+                } else if(usarElasticidadeMultinivel && evaluator.isHighNetworkAction()) {
                     grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                         evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
                         evaluator.getDecisionNetworkLoad());
-                    cloud_manager.increaseResources();
+                    cloud_manager.increaseResourcesHostsOnly();
                 }
-                else if (evaluator.isLowCpuAction() || evaluator.isLowMemAction() || evaluator.isLowNetworkAction()){ //if we have a violation on the low threshold
+                else if (evaluator.isLowCpuAction() || evaluator.isLowMemAction() || (usarElasticidadeMultinivel && evaluator.isLowNetworkAction())){ //if we have a violation on the low threshold
                     /*LOG*/gera_log(objname,"monitoring: Lower threshold violated. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources

@@ -139,6 +139,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jcbLabMode = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jcbManageHosts = new javax.swing.JCheckBox();
+        jtfusarElasticidadeMultinivel = new javax.swing.JCheckBox();
         jpCommunication = new javax.swing.JPanel();
         jtfRemoteDirSource = new javax.swing.JTextField();
         jtfRemoteDirTarget = new javax.swing.JTextField();
@@ -306,7 +307,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                             .addGroup(jpServerLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))))
+                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE))))
                     .addGroup(jpServerLayout.createSequentialGroup()
                         .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpServerLayout.createSequentialGroup()
@@ -649,7 +650,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jLabel19)
                     .addComponent(jLabel26)
                     .addComponent(jtfThresholdNetworkMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfPercentualGrao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27)
@@ -765,6 +766,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             }
         });
 
+        jtfusarElasticidadeMultinivel.setText("Elastic. Multinivel");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -772,6 +775,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtfusarElasticidadeMultinivel)
                     .addComponent(jcbManageHosts)
                     .addComponent(jcbReadOnly)
                     .addComponent(jcbLabMode)
@@ -789,6 +793,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 .addComponent(jcbReadOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jcbManageHosts)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfusarElasticidadeMultinivel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -799,13 +805,13 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             .addGroup(jpParametersLayout.createSequentialGroup()
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpParametersLayout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 289, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpParametersLayout.createSequentialGroup()
@@ -817,11 +823,11 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfSla)
                             .addGroup(jpParametersLayout.createSequentialGroup()
-                                .addComponent(jtfLogPath, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                                .addComponent(jtfLogPath, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                                 .addGap(63, 63, 63)
                                 .addComponent(jLabel20)
                                 .addGap(18, 18, 18)
-                                .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)))))
+                                .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jpParametersLayout.setVerticalGroup(
@@ -839,10 +845,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5))
         );
@@ -940,7 +946,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                                 .addComponent(jlMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfMsgPermissionRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                            .addComponent(jtfMsgPermissionRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                             .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfMsgNewResources)))
                     .addComponent(jtfLocalDirTemp))
@@ -1071,7 +1077,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpHostsLayout.setHorizontalGroup(
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 963, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbDelHost, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1082,9 +1088,9 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Hosts", jpHosts);
@@ -1104,11 +1110,11 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpGraficoLineTotal.setLayout(jpGraficoLineTotalLayout);
         jpGraficoLineTotalLayout.setHorizontalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 422, Short.MAX_VALUE)
+            .addGap(0, 531, Short.MAX_VALUE)
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
+            .addGap(0, 283, Short.MAX_VALUE)
         );
 
         jbGraphicLinePercent.setBackground(new java.awt.Color(255, 255, 255));
@@ -1117,7 +1123,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jbGraphicLinePercent.setLayout(jbGraphicLinePercentLayout);
         jbGraphicLinePercentLayout.setHorizontalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 422, Short.MAX_VALUE)
+            .addGap(0, 530, Short.MAX_VALUE)
         );
         jbGraphicLinePercentLayout.setVerticalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1448,7 +1454,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
         jpMain.setLayout(jpMainLayout);
         jpMainLayout.setHorizontalGroup(
             jpMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
             .addComponent(jpMainButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
             .addComponent(jpUpperButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1462,10 +1468,10 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpMainButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1950,6 +1956,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
     private javax.swing.JTextField jtfVMM;
     private javax.swing.JTextField jtfVNM;
     private javax.swing.JTextField jtfVmsPorHost;
+    private javax.swing.JCheckBox jtfusarElasticidadeMultinivel;
     // End of variables declaration//GEN-END:variables
 
     private void centraliza_tela() {
@@ -2088,6 +2095,7 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     escritor.append("  <USAR_GRAO_ELASTICO>" + this.jtfEnableGraoAdaptativo.isSelected() + "</USAR_GRAO_ELASTICO>\n");
                     escritor.append("  <VARIACAO_GRAO_ELASTICO>" + this.jtfPercentualGrao.getText() + "</VARIACAO_GRAO_ELASTICO>\n");
                     escritor.append("  <FUNCAO_CALCULO_TAMANHO_GRAO>" + this.jtfFuncaoCalculaGrao.getText() + "</FUNCAO_CALCULO_TAMANHO_GRAO>\n");
+                    escritor.append("  <USAR_ELASTICIDADE_MULTINIVEL>" + this.jtfusarElasticidadeMultinivel.isSelected() + "</USAR_ELASTICIDADE_MULTINIVEL>\n");
                 escritor.append(" </PARAMETERS>\n");
                     escritor.append("  <DATA_SERVER_ADDRESS>" + this.jtfSSHServer.getText() + "</DATA_SERVER_ADDRESS>\n");
                     escritor.append("  <DATA_SERVER_PORT>" + this.jtfSSHPort.getText() + "</DATA_SERVER_PORT>\n");
@@ -2213,6 +2221,13 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                 }
                 this.jtfPercentualGrao.setText(doc.getElementsByTagName("VARIACAO_GRAO_ELASTICO").item(0).getChildNodes().item(0).getNodeValue().trim());
                 this.jtfFuncaoCalculaGrao.setText(doc.getElementsByTagName("FUNCAO_CALCULO_TAMANHO_GRAO").item(0).getChildNodes().item(0).getNodeValue().trim());
+                
+                if (doc.getElementsByTagName("USAR_ELASTICIDADE_MULTINIVEL").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true")){
+                    this.jtfusarElasticidadeMultinivel.setSelected(true);
+                } else {
+                    this.jtfusarElasticidadeMultinivel.setSelected(false);
+                }
+                
                 
                 //communication
                 this.jtfSSHServer.setText(doc.getElementsByTagName("DATA_SERVER_ADDRESS").item(0).getChildNodes().item(0).getNodeValue().trim());
@@ -2346,7 +2361,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                     Integer.parseInt(this.jtfSSHPort.getText()),
                     this.jtfEnableGraoAdaptativo.isSelected(),
                     Double.parseDouble(this.jtfPercentualGrao.getText()),
-                    this.jtfFuncaoCalculaGrao.getText()
+                    this.jtfFuncaoCalculaGrao.getText(),
+                    this.jtfusarElasticidadeMultinivel.isSelected()
             );
 
             if (this.jcbLabMode.isSelected()){

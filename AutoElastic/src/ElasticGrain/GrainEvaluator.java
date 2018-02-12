@@ -85,7 +85,7 @@ public class GrainEvaluator {
             }
             if((currentDecisionNetworkLoad < lastDecisionNetworkLoad && (lastDecisionNetworkLoad - currentDecisionNetworkLoad) > percentualVariacaoGraoElastico) ||
                (currentDecisionNetworkLoad > lastDecisionNetworkLoad && (currentDecisionNetworkLoad - lastDecisionNetworkLoad) > percentualVariacaoGraoElastico)){
-                grainSize = CalculateGrainSize(oneManager.vms_per_operation, false);
+                grainSize = CalculateGrainSize(oneManager.hosts_per_operation, false);
                 if(oneManager.getActiveHosts() >= grainSize && grainSize > 0){                        
                     oneManager.hosts_per_operation = grainSize;
                 }
@@ -107,7 +107,7 @@ public class GrainEvaluator {
                     grainSize =  grainSize + (int) Math.floor(Math.pow(grainSize, 2));
                     break;
                 case Exponencial:
-                    grainSize = grainSize + (int) Math.floor(Math.pow(2, iterationForExponentialFunction));                
+                    grainSize = grainSize + (int) Math.floor(Math.pow(oneManager.quatidade_cores_host, iterationForExponentialFunction));                
                     break;
             }
         }
@@ -120,7 +120,7 @@ public class GrainEvaluator {
                     grainSize =  grainSize - (int) Math.floor(Math.pow(grainSize, 2));
                     break;
                 case Exponencial:
-                    grainSize = grainSize - (int) Math.floor(Math.pow(2, iterationForExponentialFunction));                
+                    grainSize = grainSize - (int) Math.floor(Math.pow(oneManager.quatidade_cores_host, iterationForExponentialFunction));                
                     break;
             }
             if(grainSize < 0) grainSize = 1;

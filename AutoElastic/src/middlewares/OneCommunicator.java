@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
@@ -125,9 +126,7 @@ public class OneCommunicator {
             //aqui eu deveria ler o diretorio compartilhado para verificar se posso ou nao liberar
             //Thread.sleep(60000); //mas como nao implementei espero um tempo
         } else {
-            for (int i = 0; i < graoVmsOperacao; i++) {
-                ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message);
-            }
+            ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message);
             return true;
         }
         return false;
@@ -151,39 +150,12 @@ public class OneCommunicator {
     }
 
     //método para enviar que cria e envia arquivo para o frontend, notificando a aplicação da criação de novo host e vm
-    public boolean notifyNewResources(String file_content) throws ParserConfigurationException, SAXException, IOException, InterruptedException {
-        
+    public boolean notifyNewResources(ArrayList<OneVM> new_vms) throws ParserConfigurationException, SAXException, IOException, InterruptedException {  
         gera_log(objname,"notifyNewResources: New VMs online.");
-        if (CREATELOCALFILE){
-            try {
-                //File arquivo = new File("C:\\temp\\one");
-                //arquivo.mkdirs();
-                File arquivo = new File(localdir_temp_files + notify_increase_file_name);
-                BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
-                escritor.write(file_content + "\n");
-                escritor.flush();
-
-                //if (envia_arquivo(arquivo.getAbsolutePath())) {
-                if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
-                    //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
-                    return true;
-                } else {
-                    //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            if (ssh.createFile(notify_increase_file_name, remotedir_file_target, file_content)){
-                for (int i = 0; i < graoVmsOperacao; i++) {
-                    ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message);
-                }
-                return true;
-            } else {
-                //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
-            }
+        for (int i = 0; i < new_vms.size(); i++) {
+            ssh.createFile(notify_increase_file_name, remotedir_file_target, (new_vms.get(i).getIP() + "\n"));
         }
-        return false;
+        return true;
     }
     
     public boolean ping(String host){

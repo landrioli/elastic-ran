@@ -170,6 +170,12 @@ public class OneResourcePool {
         return resources;
     }
     
+    public String getLastActiveVmIp(){
+        return virtualMachines.get(0).getIP() + ";";
+    }
+    
+    
+    
     //return the host with specific id from the actives or inactives hosts
     public OneHost getOneHost(int id){
         OneHost onehost = null;
