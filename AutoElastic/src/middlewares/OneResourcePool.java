@@ -55,6 +55,8 @@ public class OneResourcePool {
     private float vmAllCPU;           //sum of all virtual machines available CPU
     private float vmUsedMEM;          //sum of all virtual machines used MEM 
     private float vmAllMEM;           //sum of all virtual machines available MEM
+    private float vmUsedNet;          //sum of all virtual machines used Net 
+    private float vmAllNet;           //sum of all virtual machines available Net
     private String vmAllMonitoringTimes; //string with all LAST_POOL's of the used hosts in the pool
     private JTextArea log;
     private final String IM;
@@ -306,8 +308,10 @@ public class OneResourcePool {
                 //gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
                 vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
                 vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
+                vmUsedNet = vmUsedNet + vm.getUsedNet();
                 vmAllCPU = vmAllCPU + vm.getAllocatedCPU();
                 vmAllMEM = vmAllMEM + vm.getAllocatedMEM();
+                vmAllNet = vmAllNet + vm.getAllocatedNet();
                 vmAllMonitoringTimes += ";" + vm.getLastPoll();
                 gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized. (Data from cloud in " + time + "s)");
             }

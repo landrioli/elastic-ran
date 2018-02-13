@@ -49,6 +49,8 @@ public class OneVM {
     private float MAX_MEM;
     private float USED_CPU;
     private float MAX_CPU;
+    private float MAX_NET;
+    private float USED_NET;
     private long LAST_POLL;
     
     public OneVM(int tid){
@@ -61,6 +63,8 @@ public class OneVM {
         MAX_MEM = 0;
         USED_CPU = 0;
         MAX_CPU = 0;
+        USED_NET = 0;
+        MAX_NET = 0;
         LAST_POLL = 0;
     }
     
@@ -141,6 +145,14 @@ public class OneVM {
     
     public float getUsedMEM(){
         return this.USED_MEM;
+    }
+    
+    public float getAllocatedNet(){
+        return this.MAX_NET;      
+    }
+    
+    public float getUsedNet(){
+        return this.USED_NET;
     }
     
     public float getAllocatedCPU(){
@@ -239,6 +251,24 @@ public class OneVM {
             }
         }
         
+        float usoBwEntrada = 0;
+        float usoBwSaida = 0;
+        nl = doc.getElementsByTagName("NETRX");
+        if (nl.getLength() > 0){
+            el = (Element) nl.item(0);
+            if (el.getChildNodes().getLength() > 0){
+                usoBwEntrada = (float) Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim());
+            }
+        }
+        nl = doc.getElementsByTagName("NETTX");
+        if (nl.getLength() > 0){
+            el = (Element) nl.item(0);
+            if (el.getChildNodes().getLength() > 0){
+                usoBwSaida = (float) Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim());
+            }
+        }
+        this.USED_NET = (usoBwEntrada + usoBwSaida) / 2;
+        
         //gera_log(objname,"syncInfo: TEMPLATE.");
         nl = doc.getElementsByTagName("TEMPLATE");
         if (nl.getLength() > 0){
@@ -250,6 +280,19 @@ public class OneVM {
                 this.MAX_CPU = (float) (Double.parseDouble(el.getElementsByTagName("CPU").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
             }
         }
+        
+        nl = doc.getElementsByTagName("NIC");
+        if (nl.getLength() > 0){
+            el = (Element) nl.item(0);
+            float picoBwEntrada = 0;
+            float picoBwSaida = 0;
+            if (el.getElementsByTagName("INBOUND_PEAK_BW").getLength() > 0){
+                picoBwEntrada = (float) Double.parseDouble(el.getElementsByTagName("INBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
+            }
+            if (el.getElementsByTagName("OUTBOUND_PEAK_BW").getLength() > 0){
+                picoBwSaida = (float) (Double.parseDouble(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
+            }
+            this.MAX_NET = (picoBwEntrada + picoBwSaida) / 2;
         //System.out.println("0: " + time0 + " | 1: " + time1 + " | " + (time1 - time0) + " | " + ((float) ((time1 - time0)* 0.001)));
         return (float) ((time1 - time0)* 0.001);
     }
