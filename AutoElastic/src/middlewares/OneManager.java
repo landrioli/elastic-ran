@@ -281,7 +281,7 @@ public class OneManager {
         gera_log(objname, "decreaseResources: Quantidade de Hosts a serem removidos: " + hosts_per_operation + " | com essas VMS cada:" + quatidade_cores_host);
         int vmsRemovidas = 0;
         while(vmsRemovidas < qtdVmsParaRemocao){
-            var messageIpHostToBeRemoved = orpool.getLastActiveResource(hosts_per_operation, vms_per_operation);
+            String messageIpHostToBeRemoved = orpool.getLastActiveVmIp();
             if (messenger.notifyDecrease(messageIpHostToBeRemoved)){
                 while(!messenger.canDecrease()){}
                 gera_log(objname, "decreaseResources: Permission received.");
@@ -397,7 +397,8 @@ public class OneManager {
     public boolean increaseReadOnlyResources(){
         orpool.allocateReadOnlyHost();
         try {
-            messenger.notifyNewResources(orpool.getLastActiveResources(vms_per_operation, hosts_per_operation));
+            String messageIpHostToBeRemoved = orpool.getLastActiveVmIp();
+            messenger.notifyNewResources(new_vms);
         } catch (ParserConfigurationException | SAXException | IOException | InterruptedException ex) {Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);}
         return true;
     }

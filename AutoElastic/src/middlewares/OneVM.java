@@ -293,6 +293,7 @@ public class OneVM {
                 picoBwSaida = (float) (Double.parseDouble(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
             }
             this.MAX_NET = (picoBwEntrada + picoBwSaida) / 2;
+        }
         //System.out.println("0: " + time0 + " | 1: " + time1 + " | " + (time1 - time0) + " | " + ((float) ((time1 - time0)* 0.001)));
         return (float) ((time1 - time0)* 0.001);
     }

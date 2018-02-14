@@ -2543,7 +2543,8 @@ public final class AutoElasticUserInterface extends javax.swing.JFrame {
                         Integer.parseInt(this.jtfSSHPort.getText()),
                         this.jtfEnableGraoAdaptativo.isSelected(),
                         Double.parseDouble(this.jtfPercentualGrao.getText()),
-                        this.jtfFuncaoCalculaGrao.getText()
+                        this.jtfFuncaoCalculaGrao.getText(),
+                        this.jtfusarElasticidadeMultinivel.isSelected()
                 );
                 //coloco o gerenciador dentro de uma Thread e inicio ele
                 th_gerenciador = new Thread(autoelastic_manager);
