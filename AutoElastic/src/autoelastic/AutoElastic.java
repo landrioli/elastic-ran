@@ -114,7 +114,8 @@ public class AutoElastic {
                 boolean usarGraoElastico             = doc.getElementsByTagName("USAR_GRAO_ELASTICO").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true");
                 String percentualVariacaoGraoElastico = doc.getElementsByTagName("VARIACAO_GRAO_ELASTICO").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String funcaoCalculoTamanhoGrao = doc.getElementsByTagName("FUNCAO_CALCULO_TAMANHO_GRAO").item(0).getChildNodes().item(0).getNodeValue().trim();                
-                //communication
+                boolean usarElasticidadeMultinivel = doc.getElementsByTagName("USAR_ELASTICIDADE_MULTINIVEL").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true");
+//communication
                 String SSHServer            = doc.getElementsByTagName("DATA_SERVER_ADDRESS").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String SSHPort              = doc.getElementsByTagName("DATA_SERVER_PORT").item(0).getChildNodes().item(0).getNodeValue().trim();
                 String SSHUser              = doc.getElementsByTagName("DATA_SERVER_USER").item(0).getChildNodes().item(0).getNodeValue().trim();
@@ -176,7 +177,8 @@ public class AutoElastic {
                         Integer.parseInt(SSHPort),
                         usarGraoElastico,
                         Double.parseDouble(percentualVariacaoGraoElastico) / 100,
-                        funcaoCalculoTamanhoGrao
+                        funcaoCalculoTamanhoGrao,
+                        usarElasticidadeMultinivel
                 );
                 //coloco o gerenciador dentro de uma Thread e inicio ele
                 //th_gerenciador = new Thread(autoelastic_manager);
