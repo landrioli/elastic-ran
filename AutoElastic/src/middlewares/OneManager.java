@@ -173,7 +173,7 @@ public class OneManager {
         if(lastNetworkBitsUsed != 0){
             float used = orpool.getUsedNetwork();
             float allocated = orpool.getAllocatedNetwork(); //AQUI PRECISA SER O TOTAL DE BYTES NA INTERFACE       
-            float load = (lastNetworkBitsUsed - used) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
+            float load = (((lastNetworkBitsUsed - used)/15)/1024) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
             lastNetworkBitsUsed = used;
             return load;
         }
