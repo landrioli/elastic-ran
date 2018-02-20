@@ -251,23 +251,26 @@ public class OneVM {
             }
         }
         
-        float usoBwEntrada = 0;
-        float usoBwSaida = 0;
+        int usoBwEntrada = 0;
+        int usoBwSaida = 0;
         nl = doc.getElementsByTagName("NETRX");
         if (nl.getLength() > 0){
             el = (Element) nl.item(0);
             if (el.getChildNodes().getLength() > 0){
-                usoBwEntrada = (float) Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim());
+                usoBwEntrada = Integer.parseInt((el.getChildNodes().item(0).getNodeValue().trim()));
             }
         }
         nl = doc.getElementsByTagName("NETTX");
         if (nl.getLength() > 0){
             el = (Element) nl.item(0);
             if (el.getChildNodes().getLength() > 0){
-                usoBwSaida = (float) Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim());
+                usoBwSaida = Integer.parseInt((el.getChildNodes().item(0).getNodeValue().trim()));
             }
         }
-        this.USED_NET = (usoBwEntrada + usoBwSaida) / 2;
+        if(usoBwEntrada > usoBwSaida)
+           this.USED_NET = usoBwEntrada;
+        else
+           this.USED_NET = usoBwSaida;
         
         //gera_log(objname,"syncInfo: TEMPLATE.");
         nl = doc.getElementsByTagName("TEMPLATE");
@@ -290,7 +293,7 @@ public class OneVM {
                 picoBwEntrada = (float) Double.parseDouble(el.getElementsByTagName("INBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
             }
             if (el.getElementsByTagName("OUTBOUND_PEAK_BW").getLength() > 0){
-                picoBwSaida = (float) (Double.parseDouble(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
+                picoBwSaida = (float) Double.parseDouble(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
             }
             this.MAX_NET = (picoBwEntrada + picoBwSaida) / 2;
         }

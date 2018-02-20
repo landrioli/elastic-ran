@@ -12,7 +12,7 @@ package evaluators;
  */
 public interface Evaluator {
     
-    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold);
+    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold, Boolean usarElasticidadeMultinivel);
     
     public float computeLoad(float CpuLoad, float memLoad, float networkLoad);
     

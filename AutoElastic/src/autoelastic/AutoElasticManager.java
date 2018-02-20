@@ -369,7 +369,7 @@ public class AutoElasticManager implements Runnable {
             }
             /*LOG*/gera_log(objname,"monitoring: Checking threshold violations.");
             if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold(), thresholds.getUpperMemThreshold(),
-                    thresholds.getLowerMemThreshold(), thresholds.getUpperNetworkThreshold(), thresholds.getLowerNetworkThreshold())) && 
+                    thresholds.getLowerMemThreshold(), thresholds.getUpperNetworkThreshold(), thresholds.getLowerNetworkThreshold(), usarElasticidadeMultinivel)) && 
                     (!resourcesPending) && 
                     (cooldowncont < 0)){
                 //analyze the cloud situation and if we have some violation we need deal with this 
@@ -780,7 +780,7 @@ public class AutoElasticManager implements Runnable {
                 recalculate_thresholds = 0;
             }
             if ((evaluator.evaluate(thresholds.getUpperCpuThreshold(), thresholds.getLowerCpuThreshold(), thresholds.getUpperMemThreshold(),
-                    thresholds.getLowerMemThreshold(), thresholds.getUpperNetworkThreshold(), thresholds.getLowerNetworkThreshold())) && 
+                    thresholds.getLowerMemThreshold(), thresholds.getUpperNetworkThreshold(), thresholds.getLowerNetworkThreshold(), usarElasticidadeMultinivel)) && 
                     (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 times = times + ";" + System.currentTimeMillis(); //T6-AposAvaliarCarga

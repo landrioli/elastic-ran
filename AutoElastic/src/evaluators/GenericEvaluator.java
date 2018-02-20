@@ -50,7 +50,7 @@ public class GenericEvaluator implements Evaluator{
     
     //24/04/2014: método de avaliação que devolve true se houve uma sequência de VIEW_SIZE quebras seguidas em algum dos thresholds
     @Override
-    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold){
+    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold, Boolean usarElasticidadeMultinivel){
         //----------------------------------------------------------------------
         //para realizar a avaliação primeiramente comparo a cpu com os thresholds
         if (decision_cpu_load > upper_cpu_threshold){        //verifico se violamos o limite superior

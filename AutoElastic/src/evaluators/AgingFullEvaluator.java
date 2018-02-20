@@ -30,7 +30,7 @@ public class AgingFullEvaluator extends GenericEvaluator{
     * @return 
     */
     @Override
-    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold){        
+    public boolean evaluate(float upper_cpu_threshold, float lower_cpu_threshold, float upper_mem_threshold, float lower_mem_threshold, float upper_network_threshold, float lower_network_threshold, Boolean usarElasticidadeMultinivel){        
         //gera_log(objname, "Main|AginFullEvaluator|evaluate: Aging = " + decision_cpu_load);
         boolean alertHappen = false;
         if (counter >= VIEW_SIZE - 1){
@@ -45,8 +45,8 @@ public class AgingFullEvaluator extends GenericEvaluator{
                 alertHappen = true;
             } 
             if (decision_mem_load > upper_mem_threshold){ //test if we have a violation on the lower threshold after aply the aging
-                high_mem_alert = false;
-                low_mem_alert = true;
+                high_mem_alert = true;
+                low_mem_alert = false;
                 alertHappen = true;
             } else if (decision_mem_load < lower_mem_threshold){ //test if we have a violation on the lower threshold after aply the aging
                 high_mem_alert = false;

@@ -161,7 +161,7 @@ public class OneManager {
     public float getMemLoad(){
         float used = orpool.getUsedMEM();
         float allocated = orpool.getAllocatedMEM();        
-        float load = (used * 100) / allocated;
+        float load = used / allocated;
         return load;
     }
     
