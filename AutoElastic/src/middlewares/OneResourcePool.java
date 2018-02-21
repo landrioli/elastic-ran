@@ -43,20 +43,20 @@ public class OneResourcePool {
     private ArrayList<OneHost> hosts_ativos;
     private ArrayList<OneHost> hosts_inativos;
     private ArrayList<OneHost> pending_hosts;
-    private ArrayList<OneVM> virtualMachines;
+    public ArrayList<OneVM> virtualMachines;
     private float hostUsedCPU;        //soma do uso de cpu de todos os hosts ativos
     private float hostAllCPU;         //soma do total de cpu de todos os hosts ativos
     private float hostUsedMEM;        //soma do uso de memória de todos os hosts ativos
     private float hostAllMEM;         //soma do total de memória de todos os hosts ativos
-    private float hostUsedNetwork;
-    private float hostAllNetwork;
+    private long hostUsedNetwork;
+    private long hostAllNetwork;
     private String hostAllMonitoringTimes; //string with all LAST_MON_TIME's of the used hosts in the pool
     private float vmUsedCPU;          //sum of all virtual machines used CPU 
     private float vmAllCPU;           //sum of all virtual machines available CPU
     private float vmUsedMEM;          //sum of all virtual machines used MEM 
     private float vmAllMEM;           //sum of all virtual machines available MEM
-    private float vmUsedNet;          //sum of all virtual machines used Net 
-    private float vmAllNet;           //sum of all virtual machines available Net
+    private long vmUsedNet;          //sum of all virtual machines used Net 
+    private long vmAllNet;           //sum of all virtual machines available Net
     private String vmAllMonitoringTimes; //string with all LAST_POOL's of the used hosts in the pool
     private JTextArea log;
     private final String IM;
@@ -133,12 +133,20 @@ public class OneResourcePool {
         }
     }
     
-    public float getUsedNetwork(){
-        return this.hostUsedNetwork;
+    public long getUsedNetwork(){
+        if (managehosts){
+            return this.hostUsedNetwork;
+        } else {
+            return this.vmUsedNet;
+        }
     }
     
-    public float getAllocatedNetwork(){
-        return this.hostAllNetwork;
+    public long getAllocatedNetwork(){
+        if (managehosts){
+            return this.hostAllNetwork;
+        } else {
+            return this.vmAllNet;
+        }
     }
     
     public String getLastMonitorTimes(){
@@ -281,11 +289,11 @@ public class OneResourcePool {
                     host_ativo.syncInfo(); //sincroniza cada host
                     hostUsedCPU = hostUsedCPU + host_ativo.getUsedCPU(); //pega uso da cpu
                     hostUsedMEM = hostUsedMEM + host_ativo.getUsedMEM(); //get used memory
-                    hostUsedNetwork = hostUsedNetwork + host_ativo.getUsedNetwork(); //get used network
+                    //hostUsedNetwork = hostUsedNetwork + host_ativo.getUsedNetwork(); //get used network
                     //gera_log(objname, "Main|OneResourcePool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.getUsedCPU());
                     hostAllCPU = hostAllCPU + host_ativo.getMaxCPU(); //pega total de cpu
                     hostAllMEM = hostAllMEM + host_ativo.getMaxMEM(); //get total memory
-                    hostAllNetwork = hostAllNetwork + host_ativo.getMaxNetwork(); //get total network
+                    //hostAllNetwork = hostAllNetwork + host_ativo.getMaxNetwork(); //get total network
                     
                     hostAllMonitoringTimes += ";" + host_ativo.getLastMonTime(); //get the last_mon_time of the host and append in the attribute
                     gera_log(objname,"syncResources: HOST " + host_ativo.getID() + " synchronized.");
@@ -300,6 +308,8 @@ public class OneResourcePool {
             vmUsedCPU = 0;
             vmAllMEM = 0;
             vmUsedMEM = 0;
+            vmAllNet = 0;
+            vmUsedNet = 0;
             vmAllMonitoringTimes = "";
             float time = 0;
             for (OneVM vm : virtualMachines){

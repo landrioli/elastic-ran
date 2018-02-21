@@ -49,9 +49,10 @@ public class OneVM {
     private float MAX_MEM;
     private float USED_CPU;
     private float MAX_CPU;
-    private float MAX_NET;
-    private float USED_NET;
+    private long MAX_NET;
+    private long USED_NET;
     private long LAST_POLL;
+    private long lastNetworkBitsUsed = 0;
     
     public OneVM(int tid){
         templateid = tid;
@@ -79,6 +80,8 @@ public class OneVM {
         MAX_MEM = 0;
         USED_CPU = 0;
         MAX_CPU = 0;
+        USED_NET = 0;
+        MAX_NET = 0;
         LAST_POLL = 0;
     }
     
@@ -147,11 +150,11 @@ public class OneVM {
         return this.USED_MEM;
     }
     
-    public float getAllocatedNet(){
+    public long getAllocatedNet(){
         return this.MAX_NET;      
     }
     
-    public float getUsedNet(){
+    public long getUsedNet(){
         return this.USED_NET;
     }
     
@@ -287,13 +290,13 @@ public class OneVM {
         nl = doc.getElementsByTagName("NIC");
         if (nl.getLength() > 0){
             el = (Element) nl.item(0);
-            float picoBwEntrada = 0;
-            float picoBwSaida = 0;
+            long picoBwEntrada = 0;
+            long picoBwSaida = 0;
             if (el.getElementsByTagName("INBOUND_PEAK_BW").getLength() > 0){
-                picoBwEntrada = (float) Double.parseDouble(el.getElementsByTagName("INBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
+                picoBwEntrada = Long.parseLong(el.getElementsByTagName("INBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
             }
             if (el.getElementsByTagName("OUTBOUND_PEAK_BW").getLength() > 0){
-                picoBwSaida = (float) Double.parseDouble(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
+                picoBwSaida = Long.parseLong(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
             }
             this.MAX_NET = (picoBwEntrada + picoBwSaida) / 2;
         }

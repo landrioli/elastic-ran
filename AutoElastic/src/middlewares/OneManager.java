@@ -60,7 +60,7 @@ public class OneManager {
     private boolean waiting_vms;
     private ArrayList<OneVM> new_vms;
     private final boolean managehosts;
-    private float lastNetworkBitsUsed = 0;
+    private long lastNetworkBitsUsed = 0;
     
     public int vms_per_operation;
     public int hosts_per_operation = 1;
@@ -171,9 +171,9 @@ public class OneManager {
      */
     public float getNetworkLoad(){
         if(lastNetworkBitsUsed != 0){
-            float used = orpool.getUsedNetwork();
-            float allocated = orpool.getAllocatedNetwork(); //AQUI PRECISA SER O TOTAL DE BYTES NA INTERFACE       
-            float load = (((lastNetworkBitsUsed - used)/15)/1024) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
+            long used = orpool.getUsedNetwork();
+            long allocated = orpool.virtualMachines.get(0).getAllocatedNet(); //Total de byts/s possivel na interface      
+            float load =(float) (((used - lastNetworkBitsUsed)/15)/1024) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
             lastNetworkBitsUsed = used;
             return load;
         }
@@ -206,12 +206,12 @@ public class OneManager {
     }
     
     //return the total of NETWORK available in the cloud
-    public float getAllocatedNetwork(){
+    public long getAllocatedNetwork(){
         return orpool.getAllocatedNetwork();
     }
     
     //return the current use of NETWORK
-    public float getUsedNetwork(){
+    public long getUsedNetwork(){
         return orpool.getUsedNetwork();
     }
     
