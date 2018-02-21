@@ -346,11 +346,11 @@ public class AutoElasticManager implements Runnable {
             
             /*LOG*/gera_log(objname,"monitoring: Used CPU of all resources: " + cloud_manager.getUsedCPU() + " / Total CPU of all resources: " + cloud_manager.getAllocatedCPU());
             /*LOG*/gera_log(objname,"monitoring: Used MEM of all resources: " + cloud_manager.getUsedMEM()+ " / Total MEM of all resources: " + cloud_manager.getAllocatedCPU());
-            /*LOG*/gera_log(objname,"monitoring: Used NETWORK of all resources: " + cloud_manager.getUsedNetwork() + " / Total NETWORK of all resources: " + cloud_manager.getAllocatedCPU());
-            evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), cloud_manager.getNetworkLoad());            
-            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionCpuLoad() + " / Upper threshold = " + thresholds.getUpperCpuThreshold() + " / Lower threshold = " + thresholds.getLowerCpuThreshold());
-            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionMemLoad() + " / Upper threshold = " + thresholds.getUpperMemThreshold() + " / Lower threshold = " + thresholds.getLowerMemThreshold());
-            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionNetworkLoad() + " / Upper threshold = " + thresholds.getUpperNetworkThreshold() + " / Lower threshold = " + thresholds.getLowerNetworkThreshold());
+            /*LOG*/gera_log(objname,"monitoring: Used NETWORK of all resources: " + (cloud_manager.getNetworkLoad() * cloud_manager.getTotalActiveResources()) + " / Total NETWORK of all resources: " + cloud_manager.getAllocatedCPU());
+            evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), (cloud_manager.getNetworkLoad() * cloud_manager.getTotalActiveResources()));            
+            /*LOG*/gera_log(objname,"monitoring: CPU Load = " + evaluator.getDecisionCpuLoad() + " / Upper threshold = " + thresholds.getUpperCpuThreshold() + " / Lower threshold = " + thresholds.getLowerCpuThreshold());
+            /*LOG*/gera_log(objname,"monitoring: MEM Load = " + evaluator.getDecisionMemLoad() + " / Upper threshold = " + thresholds.getUpperMemThreshold() + " / Lower threshold = " + thresholds.getLowerMemThreshold());
+            /*LOG*/gera_log(objname,"monitoring: NETWORK Load = " + evaluator.getDecisionNetworkLoad() + " / Upper threshold = " + thresholds.getUpperNetworkThreshold() + " / Lower threshold = " + thresholds.getLowerNetworkThreshold());
             
             if (!cmdmode){
                 /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionCpuLoad());
