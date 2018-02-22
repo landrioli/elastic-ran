@@ -343,10 +343,11 @@ public class AutoElasticManager implements Runnable {
             /*LOG*/gera_log(objname,"monitoring: Synchronizing data.");
             cloud_manager.syncData(); //synchronize data of the cloud
             thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds APENAS USADO PARA LIVETHRESHOLDING
+            cloud_manager.computeNetwork();
             
             /*LOG*/gera_log(objname,"monitoring: Used CPU of all resources: " + cloud_manager.getUsedCPU() + " / Total CPU of all resources: " + cloud_manager.getAllocatedCPU());
-            /*LOG*/gera_log(objname,"monitoring: Used MEM of all resources: " + cloud_manager.getUsedMEM()+ " / Total MEM of all resources: " + cloud_manager.getAllocatedCPU());
-            /*LOG*/gera_log(objname,"monitoring: Used NETWORK of all resources: " + (cloud_manager.getNetworkLoad() * cloud_manager.getTotalActiveResources()) + " / Total NETWORK of all resources: " + cloud_manager.getAllocatedCPU());
+            /*LOG*/gera_log(objname,"monitoring: Used MEM of all resources: " + cloud_manager.getUsedMEM()+ " / Total MEM of all resources: " + cloud_manager.getAllocatedMEM());
+            /*LOG*/gera_log(objname,"monitoring: Used NETWORK of all resources: " + (cloud_manager.getUsedNetwork() * cloud_manager.getTotalActiveResources()) + " / Total NETWORK of all resources: " + cloud_manager.getAllocatedNetwork());
             evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), (cloud_manager.getNetworkLoad() * cloud_manager.getTotalActiveResources()));            
             /*LOG*/gera_log(objname,"monitoring: CPU Load = " + evaluator.getDecisionCpuLoad() + " / Upper threshold = " + thresholds.getUpperCpuThreshold() + " / Lower threshold = " + thresholds.getLowerCpuThreshold());
             /*LOG*/gera_log(objname,"monitoring: MEM Load = " + evaluator.getDecisionMemLoad() + " / Upper threshold = " + thresholds.getUpperMemThreshold() + " / Lower threshold = " + thresholds.getLowerMemThreshold());

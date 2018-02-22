@@ -53,14 +53,14 @@ public class AgingFullEvaluator extends GenericEvaluator{
                 low_mem_alert = true;
                 alertHappen = true;
             } 
-            if (decision_network_load > upper_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
-                high_network_alert = false;
-                low_network_alert = true;
+            if (usarElasticidadeMultinivel && decision_network_load > upper_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_network_alert = true;
+                low_network_alert = false;
                 alertHappen = true;
-            } else if (decision_network_load < lower_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
-                high_network_alert = false;
-                low_network_alert = true;
-                alertHappen = true;
+            } else if (usarElasticidadeMultinivel && decision_network_load < lower_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
+               // high_network_alert = false;
+              //  low_network_alert = true;
+              //  alertHappen = true;
             } 
             if (!alertHappen){
                 high_cpu_alert = false;
