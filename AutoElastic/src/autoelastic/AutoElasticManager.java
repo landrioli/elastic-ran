@@ -394,7 +394,8 @@ public class AutoElasticManager implements Runnable {
                     } else {
                         /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
-                } else if(usarElasticidadeMultinivel && evaluator.isHighNetworkAction()) {
+                } 
+                else if(usarElasticidadeMultinivel && evaluator.isHighNetworkAction()) {
                     gera_log(objname,"monitoring: Upper threshold violated by NETWORK. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){
@@ -403,6 +404,7 @@ public class AutoElasticManager implements Runnable {
                             evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
                             evaluator.getDecisionNetworkLoad());
                         cloud_manager.increaseResourcesHostsOnly();
+                        resourcesPending = true;
                     }
                 }
                 else if (evaluator.isLowCpuAction() || evaluator.isLowMemAction() || (usarElasticidadeMultinivel && evaluator.isLowNetworkAction())){ //if we have a violation on the low threshold
