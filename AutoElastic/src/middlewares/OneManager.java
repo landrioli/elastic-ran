@@ -60,7 +60,10 @@ public class OneManager {
     private boolean waiting_vms;
     private ArrayList<OneVM> new_vms;
     private final boolean managehosts;
+    
     private long lastNetworkBitsUsed = 0;
+    private float networkLoad = 0;
+    private long networkUsed = 0;
     
     public int vms_per_operation;
     public int hosts_per_operation = 1;
@@ -170,15 +173,22 @@ public class OneManager {
      * @return [0 &lt load &lt 1]
      */
     public float getNetworkLoad(){
+        return networkLoad;
+    }
+    
+    public void computeNetwork(){
+        networkLoad = 0;
+        networkUsed = 0;                
         if(lastNetworkBitsUsed != 0){
             long used = orpool.getUsedNetwork();
-            long allocated = orpool.virtualMachines.get(0).getAllocatedNet(); //Total de byts/s possivel na interface      
-            float load =(float) (((used - lastNetworkBitsUsed)/15)/1024) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
+            long allocated = orpool.virtualMachines.get(0).getAllocatedNet(); //Total de byts/s possivel na interface  
+            networkUsed = (long) (((used - lastNetworkBitsUsed)/15)/1024);
+            networkLoad =(float) (((used - lastNetworkBitsUsed)/15)/1024) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
             lastNetworkBitsUsed = used;
-            return load;
+            return;
         }
         lastNetworkBitsUsed = orpool.getUsedNetwork();
-        return 0;
+        networkLoad = 0;
     }
     
     
@@ -212,7 +222,7 @@ public class OneManager {
     
     //return the current use of NETWORK
     public long getUsedNetwork(){
-        return orpool.getUsedNetwork();
+        return networkUsed;
     }
     
     /**
@@ -277,7 +287,8 @@ public class OneManager {
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
         gera_log(objname, "decreaseResources: Waiting for application permission to decrease resources.");
-        int qtdVmsParaRemocao = hosts_per_operation * quatidade_cores_host;
+        //int qtdVmsParaRemocao = hosts_per_operation * quatidade_cores_host;
+        int qtdVmsParaRemocao = vms_per_operation;
         gera_log(objname, "decreaseResources: Quantidade de Hosts a serem removidos: " + hosts_per_operation + " | com essas VMS cada:" + quatidade_cores_host);
         int vmsRemovidas = 0;
         while(vmsRemovidas < qtdVmsParaRemocao){
