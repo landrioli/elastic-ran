@@ -46,9 +46,14 @@ public class UCImplementation implements UC
     }
     
     @Override
+    public void sendStream(byte[] imageBytes) {
+            
+    }
+    
+    @Override
     public byte[] download(String fileName) {
-        fileName="teste";
-        String filePath = "C:\\Users\\leandro.andrioli\\Documents\\NetBeansProjects\\ElasticRanStreamAPI\\" + fileName;
+        fileName="teste.jpg";
+        String filePath = "C:\\Pessoal\\Workspace\\elastic-ran\\ElasticRanStreamAPI\\dist\\" + fileName;
         System.out.println("Sending file: " + filePath);
          
         try {
@@ -56,7 +61,7 @@ public class UCImplementation implements UC
             FileInputStream fis = new FileInputStream(file);
             BufferedInputStream inputStream = new BufferedInputStream(fis);
             byte[] fileBytes = new byte[(int) file.length()];
-            inputStream.read(fileBytes);
+            //inputStream.read(fileBytes);
             inputStream.close();
              
             return fileBytes;
@@ -64,5 +69,11 @@ public class UCImplementation implements UC
             System.err.println(ex);
         }      
        return null;
+    }
+    
+    @Override
+    public byte[] getStream(int size){
+        byte[] fileBytes = new byte[size];
+        return fileBytes;    
     }
 }

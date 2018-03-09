@@ -14,4 +14,6 @@ public interface UC
    @WebMethod double in2cm(double in);
    @WebMethod public void upload(String fileName, byte[] imageBytes);
    @WebMethod public byte[] download(String fileName);
+   @WebMethod public byte[] getStream(int size);
+   @WebMethod public void sendStream(byte[] imageBytes);
 }
