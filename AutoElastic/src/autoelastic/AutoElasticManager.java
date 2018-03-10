@@ -353,7 +353,10 @@ public class AutoElasticManager implements Runnable {
             /*LOG*/gera_log(objname,"monitoring: CPU Load = " + evaluator.getDecisionCpuLoad() + " / Upper threshold = " + thresholds.getUpperCpuThreshold() + " / Lower threshold = " + thresholds.getLowerCpuThreshold());
             /*LOG*/gera_log(objname,"monitoring: MEM Load = " + evaluator.getDecisionMemLoad() + " / Upper threshold = " + thresholds.getUpperMemThreshold() + " / Lower threshold = " + thresholds.getLowerMemThreshold());
             /*LOG*/gera_log(objname,"monitoring: NETWORK Load = " + evaluator.getDecisionNetworkLoad() + " / Upper threshold = " + thresholds.getUpperNetworkThreshold() + " / Lower threshold = " + thresholds.getLowerNetworkThreshold());
- 
+            
+            if(cont == 5){
+                grainEvaluator.UpdateNewUsageAfterIncreases(evaluator.getDecisionCpuLoad());
+            }
             if(ocorreuExecucaoNovasVms)
             {
                 grainEvaluator.UpdateNewUsageAfterIncreases(evaluator.getDecisionCpuLoad());
@@ -383,7 +386,7 @@ public class AutoElasticManager implements Runnable {
                 //analyze the cloud situation and if we have some violation we need deal with this 
                     //and if we are not waiting for new resource allocation we can evaluate the cloud
                     //and if we are not in a cooldown period
-                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedNetwork(), (cloud_manager.getUsedNetwork() * cloud_manager.getTotalActiveResources()), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getAllocatedMEM()* thresholds.getUpperMemThreshold(), cloud_manager.getAllocatedMEM() * thresholds.getLowerMemThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getUpperNetworkThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getLowerNetworkThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), cloud_manager.getMemLoad(), evaluator.getDecisionMemLoad(),cloud_manager.getNetworkLoad(), evaluator.getDecisionNetworkLoad(), cloud_manager.vms_per_operation, cloud_manager.hosts_per_operation ,thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedNetwork(), cloud_manager.getUsedNetwork(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getAllocatedMEM()* thresholds.getUpperMemThreshold(), cloud_manager.getAllocatedMEM() * thresholds.getLowerMemThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getUpperNetworkThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getLowerNetworkThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), cloud_manager.getMemLoad(), evaluator.getDecisionMemLoad(),cloud_manager.getNetworkLoad(), evaluator.getDecisionNetworkLoad(), cloud_manager.vms_per_operation, cloud_manager.hosts_per_operation ,thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
                 if (evaluator.isHighCpuAction() || evaluator.isHighMemAction()){//if we have a violation on the high threshold
                     /*LOG*/gera_log(objname,"monitoring: Upper threshold violated by CPU/Mem. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
@@ -392,7 +395,7 @@ public class AutoElasticManager implements Runnable {
                         if (!readonly){//if not readonly proceed the normal elasticity
                             grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                                     evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
-                                    evaluator.getDecisionNetworkLoad());
+                                    evaluator.getDecisionNetworkLoad(), true);
                             cloud_manager.increaseResourcesVmsOnly();//increase one host and the number of vms informed in the parameters
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.increaseReadOnlyResources();// add a host in the monitoring pool without add it in the cloud
@@ -409,12 +412,12 @@ public class AutoElasticManager implements Runnable {
                         gera_log(objname,"monitoring: Operation authorized by SLA. Instantiating resources.");
                         grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                             evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
-                            evaluator.getDecisionNetworkLoad());
+                            evaluator.getDecisionNetworkLoad(), true);
                         cloud_manager.increaseResourcesHostsOnly();
                         resourcesPending = true;
                     }
                 }
-                else if (evaluator.isLowCpuAction() || evaluator.isLowMemAction() || (usarElasticidadeMultinivel && evaluator.isLowNetworkAction())){ //if we have a violation on the low threshold
+                else if (evaluator.isLowCpuAction() || evaluator.isLowMemAction() || (usarElasticidadeMultinivel && evaluator.isLowNetworkAction()) && (cooldowncont < 0)){ //if we have a violation on the low threshold
                     gera_log(objname,"monitoring: Lower threshold violated by CPU/MEM/NETWORK. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources
@@ -422,7 +425,7 @@ public class AutoElasticManager implements Runnable {
                         if (!readonly){//if not readonly proceed the normal elasticity
                             grainEvaluator.computeElasticGrain(evaluator.getLastDecisionCpuLoad(), evaluator.getLastDecisionMemLoad(), 
                                 evaluator.getLastDecisionNetworkLoad(), evaluator.getDecisionCpuLoad(), evaluator.getDecisionMemLoad(),
-                                evaluator.getDecisionNetworkLoad());
+                                evaluator.getDecisionNetworkLoad(), false);
                             cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.decreaseReadOnlyResources();// remove a host in the monitoring pool without remove it in the cloud
@@ -438,7 +441,7 @@ public class AutoElasticManager implements Runnable {
                 }
             } else {
                 /*LOG*/gera_log(objname,"monitoring: No operations detected or allowed.");
-                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedNetwork(), (cloud_manager.getUsedNetwork() * cloud_manager.getTotalActiveResources()), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getAllocatedMEM()* thresholds.getUpperMemThreshold(), cloud_manager.getAllocatedMEM() * thresholds.getLowerMemThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getUpperNetworkThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getLowerNetworkThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), cloud_manager.getMemLoad(), evaluator.getDecisionMemLoad(),cloud_manager.getNetworkLoad(), evaluator.getDecisionNetworkLoad(), cloud_manager.vms_per_operation, cloud_manager.hosts_per_operation ,thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedNetwork(), cloud_manager.getUsedNetwork(), cloud_manager.getAllocatedCPU() * thresholds.getUpperCpuThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerCpuThreshold(), cloud_manager.getAllocatedMEM()* thresholds.getUpperMemThreshold(), cloud_manager.getAllocatedMEM() * thresholds.getLowerMemThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getUpperNetworkThreshold(), cloud_manager.getAllocatedNetwork() * thresholds.getLowerNetworkThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionCpuLoad(), cloud_manager.getMemLoad(), evaluator.getDecisionMemLoad(),cloud_manager.getNetworkLoad(), evaluator.getDecisionNetworkLoad(), cloud_manager.vms_per_operation, cloud_manager.hosts_per_operation ,thresholds.getLowerCpuThreshold(), thresholds.getUpperCpuThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
                 gera_log(objname, "monitoring: Checking if new resources are online.");
@@ -561,13 +564,13 @@ public class AutoElasticManager implements Runnable {
 
         switch (funcaoCalculoTamanhoGrao){
             case "linear": 
-                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Linear, usarGraoElastico, percentualVariacaoGraoElastico, iphosts.length);
+                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Linear, usarGraoElastico, percentualVariacaoGraoElastico, iphosts.length, sla);
                 break;
             case "quadratica": 
-                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Quadratico, usarGraoElastico, percentualVariacaoGraoElastico, iphosts.length);
+                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Quadratico, usarGraoElastico, percentualVariacaoGraoElastico, iphosts.length, sla);
                 break;
             case "exponencial":
-                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Exponencial, usarGraoElastico, percentualVariacaoGraoElastico, iphosts.length);
+                grainEvaluator = new GrainEvaluator(cloud_manager, GrainFunctionEnum.Exponencial, usarGraoElastico, percentualVariacaoGraoElastico, iphosts.length, sla);
         }
         
         return true;

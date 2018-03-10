@@ -8,6 +8,7 @@ package ElasticGrain;
 import middlewares.OneManager;
 import thresholds.Thresholds;
 import java.lang.Math;
+import slas.WSAgreementSLA;
 
 
 /**
@@ -22,11 +23,12 @@ public class GrainEvaluator {
     private float percentualVariacaoExponencial;
     private int quantidadeHostsCadastrados;
     private float newUsageAfterIncreases;
+    private WSAgreementSLA sla;
     
     
     private int iterationForExponentialFunction;
     
-    public GrainEvaluator(OneManager om, GrainFunctionEnum gfe, boolean pusarGraoElastico, double ppercentualVariacaoGraoElasticoLinear, int pquantidadeHostsCadastrados){
+    public GrainEvaluator(OneManager om, GrainFunctionEnum gfe, boolean pusarGraoElastico, double ppercentualVariacaoGraoElasticoLinear, int pquantidadeHostsCadastrados, WSAgreementSLA psla){
         oneManager = om;
         grainFunctionEnum = gfe;
         usarGraoElastico = pusarGraoElastico;
@@ -34,14 +36,19 @@ public class GrainEvaluator {
         iterationForExponentialFunction = 1;
         quantidadeHostsCadastrados = pquantidadeHostsCadastrados;
         newUsageAfterIncreases = 0;
-        percentualVariacaoExponencial = 15;
+        percentualVariacaoExponencial = 8;
+        sla = psla;
     } 
     
     public void computeElasticGrain(float lastDecisionCpuLoad, float lastDecisionMemLoad, float lastDecisionNetworkLoad,
-            float currentDecisionCpuLoad, float currentDecisionMemLoad, float currentDecisionNetworkLoad)
+            float currentDecisionCpuLoad, float currentDecisionMemLoad, float currentDecisionNetworkLoad, boolean increase)
     {
         if(usarGraoElastico && newUsageAfterIncreases > 0){
-            System.out.println("Vai calcular o grão elastico: Atualmente esta em VM: " + oneManager.vms_per_operation + " e Host: " + oneManager.hosts_per_operation);
+            String operacao = "";
+            if(increase) operacao = "INCREASE";
+            else operacao = "DECREASE";
+            
+            System.out.println("Vai calcular o grão elastico devido a um "+ operacao +" : Atualmente esta em VM: " + oneManager.vms_per_operation + " e Host: " + oneManager.hosts_per_operation);
             System.out.println("Percentual de aumento ocorrido: " + String.valueOf(currentDecisionCpuLoad - newUsageAfterIncreases) + "Percentual definido SLA: " + percentualVariacaoGraoElasticoLinear);
 
             int grainSize = 0;
@@ -49,20 +56,40 @@ public class GrainEvaluator {
             //If the current measurement is less than the last measurement it is linear INCREASE
             if(percentualVariacao > percentualVariacaoGraoElasticoLinear){
                 grainSize = CalculateGrainSize(oneManager.vms_per_operation, true, percentualVariacao);
-                if(((quantidadeHostsCadastrados * oneManager.quatidade_cores_host) - oneManager.getTotalActiveResources()) >= grainSize)                    
-                    oneManager.vms_per_operation = grainSize;
-                else{
-                    oneManager.vms_per_operation = oneManager.getAvailableHosts() * oneManager.quatidade_cores_host; //maximo possivel dado que o grão é muito grande
-                }
+                //se for aumento validar o máximo possível de aumentar
+                if(increase){
+                    int totalDeVmsDisponiveis = ((quantidadeHostsCadastrados * oneManager.quatidade_cores_host) - oneManager.getTotalActiveResources());
+                    if(totalDeVmsDisponiveis >= grainSize)                    
+                        oneManager.vms_per_operation = grainSize;
+                    else{
+                        oneManager.vms_per_operation = totalDeVmsDisponiveis; //maximo possivel dado que o grão é muito grande
+                    }
+                }else{
+                    if (oneManager.getTotalActiveResources() - sla.getMinResources(false) >= grainSize)            
+                        oneManager.vms_per_operation = grainSize;
+                    else{
+                        oneManager.vms_per_operation = oneManager.getTotalActiveResources() - sla.getMinResources(false);
+                    }
+                }                
             }      
 
             //If the current measurement is less than the last measurement it is linear DECREASE
             if(percentualVariacao < percentualVariacaoGraoElasticoLinear){
                 grainSize = CalculateGrainSize(oneManager.vms_per_operation, false, percentualVariacao);
-                if (oneManager.getTotalActiveResources() >= grainSize)            
-                    oneManager.vms_per_operation = grainSize;
+                if(increase){
+                    int totalDeVmsDisponiveis = ((quantidadeHostsCadastrados * oneManager.quatidade_cores_host) - oneManager.getTotalActiveResources());
+                    if(totalDeVmsDisponiveis >= grainSize)                    
+                        oneManager.vms_per_operation = grainSize;
+                    else{
+                        oneManager.vms_per_operation = totalDeVmsDisponiveis; //maximo possivel dado que o grão é muito grande
+                    }
+                }
                 else{
-                    oneManager.vms_per_operation = oneManager.getActiveHosts() * oneManager.quatidade_cores_host;
+                    if (oneManager.getTotalActiveResources() - sla.getMinResources(false) >= grainSize)            
+                        oneManager.vms_per_operation = grainSize;
+                    else{
+                        oneManager.vms_per_operation = oneManager.getTotalActiveResources() - sla.getMinResources(false);
+                    }
                 }
             }
             System.out.println("Grão elastico após o calculo: " + grainSize + " | vmsOperation: " + oneManager.vms_per_operation + " | hostOperation: " + oneManager.hosts_per_operation);
@@ -77,17 +104,17 @@ public class GrainEvaluator {
                 if(grainSize <= 1)
                     grainSize = grainSize + (int) Math.floor(Math.pow(2, 2));
                 else
-                    grainSize = grainSize + (int) Math.floor(Math.pow(grainSize, 2));
+                    grainSize = grainSize + (int) Math.floor(Math.pow(2, 2));
             }
         }
         else{
             if(percentualDeAumento > percentualVariacaoGraoElasticoLinear && percentualDeAumento < percentualVariacaoExponencial){
-                grainSize = (int) grainSize + 1;
+                grainSize = (int) grainSize - 1;
             }else if(percentualDeAumento >= percentualVariacaoExponencial){
                 if(grainSize <= 1)
                     grainSize = grainSize - (int) Math.floor(Math.pow(2, 2));
                 else
-                    grainSize = grainSize - (int) Math.floor(Math.pow(grainSize, 2));
+                    grainSize = grainSize - (int) Math.floor(Math.pow(2, 2));
             }
             
             if(grainSize <= 0) grainSize = 1;

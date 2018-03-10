@@ -14,3 +14,6 @@ hs_err_pid*
 /AutoElastic/build/
 /AutoElasticPage/nbproject/private/
 /AutoElastic/dist/
+/ElasticRanStreamAPIClient/dist/
+/ElasticRanStreamAPIClient/build/
+/ElasticRanStreamAPIClient/nbproject/private/

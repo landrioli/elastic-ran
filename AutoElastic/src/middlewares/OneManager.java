@@ -289,7 +289,9 @@ public class OneManager {
         gera_log(objname, "decreaseResources: Waiting for application permission to decrease resources.");
         //int qtdVmsParaRemocao = hosts_per_operation * quatidade_cores_host;
         int qtdVmsParaRemocao = vms_per_operation;
-        gera_log(objname, "decreaseResources: Quantidade de Hosts a serem removidos: " + hosts_per_operation + " | com essas VMS cada:" + quatidade_cores_host);
+        //TODO: por enquanto melhorar futuro!!
+        //qtdVmsParaRemocao = 2;
+        gera_log(objname, "decreaseResources: Quantidade de Vms a serem removidas: " + qtdVmsParaRemocao);
         int vmsRemovidas = 0;
         while(vmsRemovidas < qtdVmsParaRemocao){
             String messageIpHostToBeRemoved = orpool.getLastActiveVmIp();
