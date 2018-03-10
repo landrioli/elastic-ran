@@ -18,23 +18,24 @@ import javax.xml.soap.SOAPMessage;
  * @author leand
  */
 public class SoapClientInstance implements Runnable {
-    private String soapEndpointUrl = "http://localhost:9901/UC";
-    private String soapAction = "";
-    private String size;
-    private SoapRequestStructure soapRequestStructure;
+    private String soapEndpointUrl;
+    private final String soapAction = "";
+    private final String size;
+    private final SoapRequestStructure soapRequestStructure;
     
-    public SoapClientInstance(String psize, SoapRequestStructure psoapRequestStructure){
+    public SoapClientInstance(String psize, String psoapEndpointUrl, SoapRequestStructure psoapRequestStructure){
         size = psize;
         soapRequestStructure = psoapRequestStructure;
+        soapEndpointUrl = psoapEndpointUrl;
     }
     
     public void ExecuteStream() throws SOAPException, IOException{
         soapRequestStructure.SetSize(size);
-        
+
         // Create SOAP Connection
         SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
         SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-
+        
         
         long lStartTime = System.nanoTime();
 	
@@ -43,9 +44,9 @@ public class SoapClientInstance implements Runnable {
         long lEndTime = System.nanoTime();
         long output = lEndTime - lStartTime;
         //soapResponse.writeTo(System.out);
-        System.out.println("Elapsed time in milliseconds: " + output / 1000000);
-        soapConnection.close();
-        
+        System.out.println("Elapsed time in milliseconds for SIZE "+ size +" : " + output / 1000000);
+       
+        soapConnection.close();        
     } 
 
     @Override

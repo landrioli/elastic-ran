@@ -20,30 +20,9 @@ public class ElasticRanAPICLient {
     public static void main(String[] args) throws SOAPException, InterruptedException, IOException {
         SoapRequestStructure request = new SoapRequestStructure();
         
-        Thread t = new Thread(new SoapClientInstance("10000", request));
-        t.run();
-        
-        Thread t2 = new Thread(new SoapClientInstance("100000", request));
-        t2.run();
-        
-        Thread t3 = new Thread(new SoapClientInstance("1000000", request));
-        t3.run();
-        
-        Thread t4 = new Thread(new SoapClientInstance("10000000", request));
-        t4.run();
-        
-        Thread t5 = new Thread(new SoapClientInstance("100000000", request));
-        t5.run();
-        
-        Thread t6 = new Thread(new SoapClientInstance("300000000", request));
-        t6.run();
-        
+        Thread t = new Thread(new SoapClientInstance(args[0], args[1], request));
+        t.start();
         t.join();
-        t2.join();
-        t3.join();
-        t4.join();
-        t5.join();
-        t6.join();
     }
     
 }

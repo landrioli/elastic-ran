@@ -16,6 +16,7 @@ public class ElasticRanStreamAPI
 {
    public static void main(String[] args)
    {
-      Endpoint.publish("http://localhost:9901/UC", new UCImplementation());
+      //Endpoint.publish("http://localhost:9901/UC", new UCImplementation());
+        Endpoint.publish(args[0], new UCImplementation());
    }
 }

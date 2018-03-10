@@ -22,8 +22,9 @@ public class SoapRequestStructure {
         BuildSoapStructure();
     }
     
-    public void SetSize(String psize) throws SOAPException{
+    public void SetSize(String psize) throws SOAPException, IOException{
         soapMessage.getSOAPBody().getFirstChild().getFirstChild().setTextContent(psize);
+        soapMessage.saveChanges();        
     }
     
     public SOAPMessage GetRequest(){
