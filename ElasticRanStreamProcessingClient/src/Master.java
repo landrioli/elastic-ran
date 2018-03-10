@@ -336,9 +336,11 @@ public class Master {
                     prc_int_final = prc_int_inicial + (prc_qtde_slices * job.get_slice()); //refaço o calculo do intervalo final, tendo em vista que o valor do minha quantidade de slices por processo foi alterado
                     tem_dados = false; //aviso o laço que este é o último envio...
                 }
-                //envio da tarefa
+                //atualizar o tamanho da tarefa
+                String streamSize = CalculateStreamSize(nrojob);
+                job.set_stream_size(streamSize);
                 job.set_part(prc_int_inicial, prc_int_final, prc_qtde_slices);
-                //System.out.println("skts_utilizados: " + skts_utilizados + " - oos.size: " + oos.length);
+                //envio da tarefa
                 oos[skts_utilizados].writeObject(job); //envio uma parte da tarefa
                 skts_utilizados++; //incrementa o nro de sockets utilizados
             }
@@ -467,5 +469,13 @@ public class Master {
         for (int i = 0; i < this.Jobs.size(); i++){
             System.out.println("Resultado f" + i + ": " + Jobs.get(i).get_result());
         }
+    }
+
+    private String CalculateStreamSize(int nrojob) {
+        //   CPU Slices    -    BytesStream
+        //1000150 - 10000000
+        //
+        //Deve aumentar de 1000 em 1000 bytes dados que são 10 mil execuções
+        return String.valueOf((nrojob + 1) * 1000);
     }
 }

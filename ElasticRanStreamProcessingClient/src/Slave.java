@@ -2,6 +2,7 @@
 
 import java.net.*;
 import java.io.*;
+import javax.xml.soap.SOAPException;
 
 public class Slave {
 
@@ -12,13 +13,18 @@ public class Slave {
     String compath; //diretorio compartilhado para comunicação
     String logpath; //diretorio em que deve ser salvo os tempos obtidos
     String name; //nome do escravo que será usado para identificar o log
-    
+    SoapRequestStructure request;
+    String soapEndpoint;
+    StringBuilder responseTime = new StringBuilder();
 	
-    public Slave(int port, String compath, String logpath) throws IOException{
+    public Slave(int port, String compath, String logpath, String psoapEndpoint) throws IOException, SOAPException{
         this.porta = port;
         this.compath = compath;
         this.logpath = logpath;
         this.name = "S" + System.currentTimeMillis();
+        this.request = new SoapRequestStructure();
+        this.soapEndpoint = psoapEndpoint;
+        this.responseTime.append("0");
     }
 	
     public void computa() throws ClassNotFoundException, IOException, InterruptedException{
@@ -62,30 +68,36 @@ public class Slave {
         con = new Socket(ip_servidor, porta);
         
         //tempos = tempos + ";" + System.currentTimeMillis() +"\n\n" + "T3-AntesDeReceberTarefa;T4-AposReceberTarefa;T5-AntesCalcular;T6-AposCalcular-AntesDeEnviar;T7-AposEnviar"; //T2-AposConectar
-        tempos = tempos + ";" + System.currentTimeMillis() +"\n\n" + "Contador;IniLoop"; //T2-AposConectar
+        tempos = tempos + ";" + System.currentTimeMillis() +"\n\n" + "Contador;IniLoop;StreamSize;ResponseTime"; //T2-AposConectar
         
         //System.out.println("Conexão realizada com sucesso");
         oi = new ObjectInputStream(con.getInputStream());
         oo = new ObjectOutputStream(con.getOutputStream());
         
         boolean ativo = true;
-        while(ativo){
-            tempos = tempos + "\n" + cont + ";" + System.currentTimeMillis(); //IniLoop
+        while(ativo){  
             Job job = (Job) oi.readObject();
-           // tempos = tempos + ";" + System.currentTimeMillis(); //T4-AposReceberTarefa
+            tempos = tempos + "\n" + cont + ";" + System.currentTimeMillis() + ";" + job.get_stream_size() + ";" + this.responseTime; //IniLoop
+            System.out.println("Elapsed time in milliseconds for SIZE "+ job.get_stream_size() +" : " + this.responseTime);
+            // tempos = tempos + ";" + System.currentTimeMillis(); //T4-AposReceberTarefa
             //System.out.println("Dados recebidos...");
             if (job.get_msg().equalsIgnoreCase("quit")){
                 //System.out.println("Mensagem de quit recebida...");
                 ativo = false;
             } else {
+                //
+                Thread t = new Thread(new SoapClientInstance(job.get_stream_size(), soapEndpoint, request, this.responseTime));
+                t.start();
                 //System.out.println("Calculando dados: " + job.get_part_qtde_slices());
                 //tempos = tempos + ";" + System.currentTimeMillis(); //T5-AntesCalcular
                 job.calcula();
                 //tempos = tempos + ";" + System.currentTimeMillis(); //T6-AposCalcular-AntesDeEnviar
-                //System.out.println("Enviando dados para o server...");    
+                //System.out.println("Enviando dados para o server...");  
+                t.join();
                 oo.writeObject(job);
                 //tempos = tempos + ";" + System.currentTimeMillis(); //T7-AposEnviar
-                //System.out.println("Dados enviados...");
+                //System.out.println("Dados enviados...");            
+                
             }
             cont++;
         }

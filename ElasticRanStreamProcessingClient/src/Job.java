@@ -18,12 +18,15 @@ public class Job implements Serializable{
     private double X0; //intervalo inicial para calculo
     private double X1; //intervalo final para calculo
     private double qtde_slices; //numero de passos a ser realizado para o cálculo
-    private double slice; //tamanho do intervalo a ser realizado para cada cálculo 
+    private double slice; //tamanho do intervalo a ser realizado para cada cálculo     
     private ArrayList potencias_pos; //array que guarda todas as potencias aplicadas a x quando x é positivo
     private ArrayList potencias_neg; //array que guarda todas as potencias aplicadas a x quando x é negativo
     private int valor; //valores absolutos
     private double resultado; //resultado final
     private String message; //mensagem a ser passada para os processos
+    
+    private String streamSize; //tamanho da stream em bytes
+    
     
     //parametros que serao alterados para cada processo diferente
     private double part_X0; 
@@ -190,6 +193,16 @@ public class Job implements Serializable{
         this.part_qtde_slices = div;
         this.part_X0 = int_ini;
         this.part_X1 = int_fim;
+    }
+    
+    public void set_stream_size(String streamSize)
+    {
+        this.streamSize = streamSize;
+    }
+    
+    public String get_stream_size()
+    {
+        return this.streamSize;
     }
     
     //####################### LIMBO ###############################
