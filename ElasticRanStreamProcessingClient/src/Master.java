@@ -337,7 +337,7 @@ public class Master {
                     tem_dados = false; //aviso o laço que este é o último envio...
                 }
                 //atualizar o tamanho da tarefa
-                String streamSize = CalculateStreamSize(nrojob);
+                String streamSize = CalculateStreamSize((int) prc_qtde_slices);
                 job.set_stream_size(streamSize);
                 job.set_part(prc_int_inicial, prc_int_final, prc_qtde_slices);
                 //envio da tarefa
@@ -471,11 +471,10 @@ public class Master {
         }
     }
 
-    private String CalculateStreamSize(int nrojob) {
+    private String CalculateStreamSize(int sizeProcessingGrainSlices) {
         //   CPU Slices    -    BytesStream
         //1000150 - 10000000
         //
-        //Deve aumentar de 1000 em 1000 bytes dados que são 10 mil execuções
-        return String.valueOf((nrojob + 1) * 1000);
+        return String.valueOf(sizeProcessingGrainSlices * 10);
     }
 }

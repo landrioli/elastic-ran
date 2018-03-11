@@ -40,7 +40,8 @@ public class SoapClientInstance implements Runnable {
         
         long lStartTime = System.currentTimeMillis();
         SOAPMessage soapResponse = soapConnection.call(soapRequestStructure.GetRequest(), soapEndpointUrl);        
-        long estimatedTime = (System.currentTimeMillis() - lStartTime);
+        long lEndTime = System.currentTimeMillis();
+        long estimatedTime = (lEndTime - lStartTime);
         
         //soapResponse.writeTo(System.out);
         this.responseTime.delete(0, responseTime.length());
