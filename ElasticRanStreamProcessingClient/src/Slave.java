@@ -78,9 +78,8 @@ public class Slave {
         while(ativo){  
             Job job = (Job) oi.readObject();
             tempos = tempos + "\n" + cont + ";" + System.currentTimeMillis() + ";" + job.get_stream_size() + ";" + this.responseTime; //IniLoop
-            System.out.println("Elapsed time in milliseconds for SIZE "+ job.get_stream_size() +" : " + this.responseTime);
-            // tempos = tempos + ";" + System.currentTimeMillis(); //T4-AposReceberTarefa
-            //System.out.println("Dados recebidos...");
+            //System.out.println("Elapsed time in milliseconds for SIZE "+ job.get_stream_size() +" : " + this.responseTime);
+            
             if (job.get_msg().equalsIgnoreCase("quit")){
                 //System.out.println("Mensagem de quit recebida...");
                 ativo = false;
