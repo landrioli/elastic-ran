@@ -38,11 +38,8 @@ public class SoapRequestStructure {
 
         createSoapEnvelope(message);
 
-        MimeHeaders headers = message.getMimeHeaders();
-        headers.addHeader("SOAPAction", "getStream");
-
         message.saveChanges();
-
+        message.writeTo(System.out);
         soapMessage = message;
     }
     

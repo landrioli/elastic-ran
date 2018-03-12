@@ -475,6 +475,6 @@ public class Master {
         //   CPU Slices    -    BytesStream
         //1000150 - 10000000
         //
-        return String.valueOf(sizeProcessingGrainSlices * 10);
+        return String.valueOf(sizeProcessingGrainSlices * 1);
     }
 }
