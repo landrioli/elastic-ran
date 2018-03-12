@@ -472,9 +472,7 @@ public class Master {
     }
 
     private String CalculateStreamSize(int sizeProcessingGrainSlices) {
-        //   CPU Slices    -    BytesStream
-        //1000150 - 10000000
-        //
-        return String.valueOf(sizeProcessingGrainSlices * 10);
+        // FAZER X 2 PARA DAR CERTO O TEMPO DE BUSCAR OS BYTES E PROCESSAR TAL TAREFA
+        return String.valueOf(sizeProcessingGrainSlices * 2);
     }
 }
