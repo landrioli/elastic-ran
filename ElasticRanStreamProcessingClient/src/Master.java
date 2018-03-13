@@ -339,7 +339,7 @@ public class Master {
                 //atualizar o tamanho da tarefa
                 String streamSize = CalculateStreamSize((int) prc_qtde_slices);
                 job.set_stream_size(streamSize);
-                job.set_part(prc_int_inicial, prc_int_final, prc_qtde_slices);
+                job.set_part(prc_int_inicial, prc_int_final, (prc_qtde_slices + (prc_qtde_slices * 0.3)));
                 //envio da tarefa
                 oos[skts_utilizados].writeObject(job); //envio uma parte da tarefa
                 skts_utilizados++; //incrementa o nro de sockets utilizados
