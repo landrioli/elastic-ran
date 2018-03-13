@@ -240,18 +240,13 @@ public class OneHost {
         //for (int i = 0; i < vms.size(); i++){
         //    vms.get(i).syncInfo();
         //}
-        
-        //TODO: Get MAX_USED_NETWORK
-        NodeList MAXNETWORK = conjunto_parametros.getElementsByTagName("XXXXXXXXXXXXXMAX_MEM");
-        Element MNETWORK = (Element)MAXNETWORK.item(0);
-        NodeList textMNETWORK = MNETWORK.getChildNodes();
-        this.MAX_NETWORK = Integer.parseInt(((Node)textMNETWORK.item(0)).getNodeValue().trim());
-        
+        NodeList network = doc.getElementsByTagName("TEMPLATE");
+        Element netElement = (Element)network.item(0);        
         //TODO: Get USED_CURRENT_NETWORK
-        NodeList USENETWORK = conjunto_parametros.getElementsByTagName("XXXXXXXXXXXXXUSED_MEM");
+        NodeList USENETWORK = netElement.getElementsByTagName("NETRX");
         Element UNETWORK = (Element)USENETWORK.item(0);
         NodeList textUNETWORK = UNETWORK.getChildNodes();
-        this.USED_NETWORK = Integer.parseInt(((Node)textUNETWORK.item(0)).getNodeValue().trim());
+        this.USED_NETWORK = Float.valueOf(((Node)textUNETWORK.item(0)).getNodeValue().trim());
     }
     
     private String[] getValuesFromXML(String TAG, String SUBTAG) throws ParserConfigurationException, SAXException, IOException{

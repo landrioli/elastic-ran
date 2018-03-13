@@ -40,7 +40,7 @@ public class OneResourcePool {
     
     //private OneHost[] hosts; //hosts que serão utilizados no ambiente    
     private final String objname = "middlewares.OneResourcePool"; //name of the class to be used in the logs
-    private ArrayList<OneHost> hosts_ativos;
+    public ArrayList<OneHost> hosts_ativos;
     private ArrayList<OneHost> hosts_inativos;
     private ArrayList<OneHost> pending_hosts;
     public ArrayList<OneVM> virtualMachines;
@@ -312,9 +312,25 @@ public class OneResourcePool {
             vmUsedNet = 0;
             vmAllMonitoringTimes = "";
             float time = 0;
+            
+            OneHost host = hosts_ativos.get(hosts_ativos.size()-1);
+            try {
+                host.syncInfo();
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SAXException ex) {
+                Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            long maxMemHost = (long)host.getMaxMEM();
+            long usedMemHost = (long)host.getUsedMEM();
+            //long netHost = (long)host.getUsedNetwork();
+            
+            
             for (OneVM vm : virtualMachines){
                 //gera_log(objname,"syncResources: Updating VM ID " + vm.getID() + " data from cloud.");
-                time = vm.syncInfo();
+                time = vm.syncInfo(maxMemHost, usedMemHost);
                 //gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
                 vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
                 vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
@@ -324,10 +340,13 @@ public class OneResourcePool {
                 vmAllNet = vmAllNet + vm.getAllocatedNet();
                 vmAllMonitoringTimes += ";" + vm.getLastPoll();
                 gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized. (Data from cloud in " + time + "s)");
+                //gera_log(objname, "################## Host MEM: " + memHost + " Host network: " + netHost);
+                //(objname, "################## VM MEM: " + vm.getUsedMEM() + " VM network: " + vm.getUsedNet());
             }
             gera_log(objname,"syncResources: " + virtualMachines.size() + " vm(s) synchronized.");
         }
     }
+    
     
     public int getActiveHosts()
     {

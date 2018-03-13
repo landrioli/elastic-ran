@@ -170,7 +170,7 @@ public class OneVM {
         return this.LAST_POLL;
     }
   
-    public float syncInfo(){
+    public float syncInfo(long maxMem, long usedMem){
         long time0, time1;
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;
@@ -237,13 +237,7 @@ public class OneVM {
         }
         
         //gera_log(objname,"syncInfo: MEMORY.");
-        nl = doc.getElementsByTagName("MEMORY");
-        if (nl.getLength() > 0){
-            el = (Element) nl.item(0);
-            if (el.getChildNodes().getLength() > 0){
-                this.USED_MEM = (float) (Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim()) / 1024);
-            }
-        }
+        this.USED_MEM = usedMem;
         
         //gera_log(objname,"syncInfo: CPU.");
         nl = doc.getElementsByTagName("CPU");
@@ -254,20 +248,20 @@ public class OneVM {
             }
         }
         
-        int usoBwEntrada = 0;
-        int usoBwSaida = 0;
+        long usoBwEntrada = 0;
+        long usoBwSaida = 0;
         nl = doc.getElementsByTagName("NETRX");
         if (nl.getLength() > 0){
             el = (Element) nl.item(0);
             if (el.getChildNodes().getLength() > 0){
-                usoBwEntrada = Integer.parseInt((el.getChildNodes().item(0).getNodeValue().trim()));
+                usoBwEntrada = Long.parseLong((el.getChildNodes().item(0).getNodeValue().trim()));
             }
         }
         nl = doc.getElementsByTagName("NETTX");
         if (nl.getLength() > 0){
             el = (Element) nl.item(0);
             if (el.getChildNodes().getLength() > 0){
-                usoBwSaida = Integer.parseInt((el.getChildNodes().item(0).getNodeValue().trim()));
+                usoBwSaida = Long.parseLong((el.getChildNodes().item(0).getNodeValue().trim()));
             }
         }
         if(usoBwEntrada > usoBwSaida)
@@ -279,9 +273,7 @@ public class OneVM {
         nl = doc.getElementsByTagName("TEMPLATE");
         if (nl.getLength() > 0){
             el = (Element) nl.item(0);
-            if (el.getElementsByTagName("MEMORY").getLength() > 0){
-                this.MAX_MEM = (float) Double.parseDouble(el.getElementsByTagName("MEMORY").item(0).getChildNodes().item(0).getNodeValue().trim());
-            }
+            this.MAX_MEM = maxMem;
             if (el.getElementsByTagName("CPU").getLength() > 0){
                 this.MAX_CPU = (float) (Double.parseDouble(el.getElementsByTagName("CPU").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
             }

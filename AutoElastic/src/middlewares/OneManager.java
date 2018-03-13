@@ -181,7 +181,7 @@ public class OneManager {
         networkUsed = 0;                
         if(lastNetworkBitsUsed != 0){
             long used = orpool.getUsedNetwork();
-            long allocated = orpool.virtualMachines.get(0).getAllocatedNet(); //Total de byts/s possivel na interface  
+            long allocated = 4500; //Total de byts/s possivel na interface  
             networkUsed = (long) (((used - lastNetworkBitsUsed)/15)/1024);
             networkLoad =(float) (((used - lastNetworkBitsUsed)/15)/1024) / allocated; //talvez dividir por mais o tempo do monitoramento (15s se a configuração do máximo for bits/segundos na interface)
             lastNetworkBitsUsed = used;
@@ -363,7 +363,20 @@ public class OneManager {
         if (waiting_vms){
             for (int i = 0; i < new_vms.size(); i++){
                 if (new_vms.get(i).getIP().equalsIgnoreCase("")){
-                    new_vms.get(i).syncInfo();
+                    OneHost host = orpool.hosts_ativos.get(orpool.hosts_ativos.size()-1);
+                    try {
+                        host.syncInfo();
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    long maxMemHost = (long)host.getMaxMEM();
+                    long usedMemHost = (long)host.getUsedMEM();
+                    
+                    new_vms.get(i).syncInfo(maxMemHost, usedMemHost);
                 }
                 gera_log(objname,"newResourcesPending: Trying to reach VM IP " + new_vms.get(i).getIP()); 
                 if (!messenger.ping(new_vms.get(i).getIP())){
