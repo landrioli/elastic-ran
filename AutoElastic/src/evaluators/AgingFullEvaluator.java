@@ -86,7 +86,6 @@ public class AgingFullEvaluator extends GenericEvaluator{
         decision_cpu_load = (float) (decision_cpu_load * 0.5 + cpuLoad * 0.5);
         decision_mem_load = (float) (decision_mem_load * 0.5 + memLoad * 0.5);
         decision_network_load = (float) (decision_network_load * 0.5 + networkLoad * 0.5);
-
-        return 0;
+         return 0;
     }
 }

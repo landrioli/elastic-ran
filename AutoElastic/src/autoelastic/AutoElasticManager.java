@@ -349,7 +349,7 @@ public class AutoElasticManager implements Runnable {
             /*LOG*/gera_log(objname,"monitoring: Used CPU of all resources: " + cloud_manager.getUsedCPU() + " / Total CPU of all resources: " + cloud_manager.getAllocatedCPU());
             /*LOG*/gera_log(objname,"monitoring: Used MEM of all resources: " + cloud_manager.getUsedMEM()+ " / Total MEM of all resources: " + cloud_manager.getAllocatedMEM());
             /*LOG*/gera_log(objname,"monitoring: Used NETWORK of all resources: " + (cloud_manager.getUsedNetwork() * cloud_manager.getTotalActiveResources()) + " / Total NETWORK of all resources: " + cloud_manager.getAllocatedNetwork());
-            evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), (cloud_manager.getNetworkLoad() * cloud_manager.getTotalActiveResources()));            
+            evaluator.computeLoad(cloud_manager.getCPULoad(), cloud_manager.getMemLoad(), cloud_manager.getNetworkLoad());            
             /*LOG*/gera_log(objname,"monitoring: CPU Load = " + evaluator.getDecisionCpuLoad() + " / Upper threshold = " + thresholds.getUpperCpuThreshold() + " / Lower threshold = " + thresholds.getLowerCpuThreshold());
             /*LOG*/gera_log(objname,"monitoring: MEM Load = " + evaluator.getDecisionMemLoad() + " / Upper threshold = " + thresholds.getUpperMemThreshold() + " / Lower threshold = " + thresholds.getLowerMemThreshold());
             /*LOG*/gera_log(objname,"monitoring: NETWORK Load = " + evaluator.getDecisionNetworkLoad() + " / Upper threshold = " + thresholds.getUpperNetworkThreshold() + " / Lower threshold = " + thresholds.getLowerNetworkThreshold());
@@ -560,7 +560,7 @@ public class AutoElasticManager implements Runnable {
         }
         
         if (!monitoring){return false;}//return if not monitoring
-        export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Tempo Milisegundos,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,Total NET alocada, Total NET usada, CPU Limite Superior,CPU Limite Inferior,Memoria Limite Superior, Memoria Limite Inferior, NET Limite Superior, NET Limite Inferior, % Carga de CPU, CPU Load Calculado,% Carga de Memoria, Memoria Load Calculado, % Carga de Net,	NET Load Calculado, Grão VMs, Grão Hosts, Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
+        export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Tempo Milisegundos,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,Total NET alocada, Total NET usada, CPU Limite Superior,CPU Limite Inferior,Memoria Limite Superior, Memoria Limite Inferior, NET Limite Superior, NET Limite Inferior, % Carga de CPU, CPU Load Calculado,% Carga de Memoria, Memoria Load Calculado, % Carga de Net,	NET Load Calculado, Grao VMs, Grao Hosts, Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
 
         switch (funcaoCalculoTamanhoGrao){
             case "linear": 

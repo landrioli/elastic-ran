@@ -290,7 +290,8 @@ public class OneVM {
             if (el.getElementsByTagName("OUTBOUND_PEAK_BW").getLength() > 0){
                 picoBwSaida = Long.parseLong(el.getElementsByTagName("OUTBOUND_PEAK_BW").item(0).getChildNodes().item(0).getNodeValue().trim());
             }
-            this.MAX_NET = (picoBwEntrada + picoBwSaida) / 2;
+            //this.MAX_NET = (picoBwEntrada + picoBwSaida) / 2;
+            this.MAX_NET = 4000;
         }
         //System.out.println("0: " + time0 + " | 1: " + time1 + " | " + (time1 - time0) + " | " + ((float) ((time1 - time0)* 0.001)));
         return (float) ((time1 - time0)* 0.001);
