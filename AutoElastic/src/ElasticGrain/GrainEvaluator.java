@@ -38,7 +38,7 @@ public class GrainEvaluator {
         iterationForExponentialFunction = 1;
         quantidadeHostsCadastrados = pquantidadeHostsCadastrados;
         newUsageAfterIncreases = 0;
-        percentualVariacaoExponencial = 8;
+        percentualVariacaoExponencial = 0.1f;
         sla = psla;
         increase_grain_vms_size = 1;
         decrease_grain_vms_size = 1;
@@ -52,11 +52,11 @@ public class GrainEvaluator {
             if(increase) operacao = "INCREASE";
             else operacao = "DECREASE";
             
-            System.out.println("Vai calcular o grão elastico devido a um " + operacao + " | Atualmente esta em increase_grain_vms_size: " +  increase_grain_vms_size + " + decrease_grain_vms_size + " + decrease_grain_vms_size);
-            System.out.println("Percentual de aumento ocorrido: " + String.valueOf(currentDecisionCpuLoad - newUsageAfterIncreases) + "Percentual definido SLA: " + percentualVariacaoGraoElasticoLinear);
+            System.out.println("Vai calcular o grão elastico devido a um " + operacao + " | Atualmente esta em increase_grain_vms_size: " +  increase_grain_vms_size + " | decrease_grain_vms_size: " + decrease_grain_vms_size);
+            System.out.println("Percentual de aumento ocorrido: " + String.valueOf(lastDecisionCpuLoad - currentDecisionCpuLoad) + "Percentual definido SLA: " + percentualVariacaoGraoElasticoLinear);
 
             float percentualVariacao = Math.abs(lastDecisionCpuLoad - currentDecisionCpuLoad);
-            //If the current measurement is less than the last measurement it is linear INCREASE
+            //Se o percentual de variação for maior que o linear (menor deles) ja quer dizer que o grão vai aumentar de tamanho
             if(percentualVariacao > percentualVariacaoGraoElasticoLinear){
                 CalculateGrainSize(true, percentualVariacao, increase);
                 //se for para adicionar recursos
@@ -76,7 +76,7 @@ public class GrainEvaluator {
                 }                
             }      
 
-            //If the current measurement is less than the last measurement it is linear DECREASE
+            //Se o percentual de variação for menor que o linear (menor deles) ja quer dizer que o grão vai diminuir de tamanho
             if(percentualVariacao < percentualVariacaoGraoElasticoLinear){
                 CalculateGrainSize(false, percentualVariacao, increase);
                 if(increase){
