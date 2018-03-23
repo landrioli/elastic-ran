@@ -26,7 +26,7 @@ public class GrainEvaluator {
     private WSAgreementSLA sla;
     private int increase_grain_vms_size;
     private int decrease_grain_vms_size;
-    
+    private String reportGrain = "";
     
     private int iterationForExponentialFunction;
     
@@ -38,7 +38,7 @@ public class GrainEvaluator {
         iterationForExponentialFunction = 1;
         quantidadeHostsCadastrados = pquantidadeHostsCadastrados;
         newUsageAfterIncreases = 0;
-        percentualVariacaoExponencial = 0.1f;
+        percentualVariacaoExponencial = 0.06f;
         sla = psla;
         increase_grain_vms_size = 1;
         decrease_grain_vms_size = 1;
@@ -54,8 +54,11 @@ public class GrainEvaluator {
             
             System.out.println("Vai calcular o grão elastico devido a um " + operacao + " | Atualmente esta em increase_grain_vms_size: " +  increase_grain_vms_size + " | decrease_grain_vms_size: " + decrease_grain_vms_size);
             System.out.println("Percentual de aumento ocorrido: " + String.valueOf(lastDecisionCpuLoad - currentDecisionCpuLoad) + "Percentual definido SLA: " + percentualVariacaoGraoElasticoLinear);
-
-            float percentualVariacao = Math.abs(lastDecisionCpuLoad - currentDecisionCpuLoad);
+            
+            //float percentualVariacao = Math.abs(newUsageAfterIncreases - currentDecisionCpuLoad);
+            //if (percentualVariacao < 0.001f)
+             //   percentualVariacao = Math.abs(lastDecisionCpuLoad - currentDecisionCpuLoad);
+             float percentualVariacao = Math.abs(lastDecisionCpuLoad - currentDecisionCpuLoad);
             //Se o percentual de variação for maior que o linear (menor deles) ja quer dizer que o grão vai aumentar de tamanho
             if(percentualVariacao > percentualVariacaoGraoElasticoLinear){
                 CalculateGrainSize(true, percentualVariacao, increase);
@@ -95,7 +98,8 @@ public class GrainEvaluator {
                     }
                 }
             }
-            System.out.println("Grão elastico após o calculo: increase_grain_vms_size: " + increase_grain_vms_size + " | decrease_grain_vms_size: " + decrease_grain_vms_size + " | vmsPerOperation: " + oneManager.vms_per_operation + " e hostOperation: " + oneManager.hosts_per_operation);
+            reportGrain = "aumento ocorrido: " + percentualVariacao + "|Percentual definido SLA: " + percentualVariacaoGraoElasticoLinear + " | "+ "Grao apos calculo: increase_grain_vms_size: " + increase_grain_vms_size + " | decrease_grain_vms_size: " + decrease_grain_vms_size + " | vmsPerOperation: " + oneManager.vms_per_operation + " e hostOperation: " + oneManager.hosts_per_operation;
+            System.out.println(reportGrain);             
         }
     }
     
@@ -106,20 +110,14 @@ public class GrainEvaluator {
                 if(percentualDeAumento > percentualVariacaoGraoElasticoLinear && percentualDeAumento < percentualVariacaoExponencial){
                     increase_grain_vms_size = (int) increase_grain_vms_size + 1;
                 }else if(percentualDeAumento >= percentualVariacaoExponencial){
-                    if(increase_grain_vms_size <= 1)
-                        increase_grain_vms_size = increase_grain_vms_size + (int) Math.floor(Math.pow(2, 2));
-                    else
-                        increase_grain_vms_size = increase_grain_vms_size + (int) Math.floor(Math.pow(2, 2));
+                    increase_grain_vms_size = increase_grain_vms_size + (int) Math.floor(Math.pow(2, 2));
                 }
             }
             else{
-                if(percentualDeAumento > percentualVariacaoGraoElasticoLinear && percentualDeAumento < percentualVariacaoExponencial){
+                if(percentualDeAumento < percentualVariacaoGraoElasticoLinear){
                     increase_grain_vms_size = (int) increase_grain_vms_size - 1;
                 }else if(percentualDeAumento >= percentualVariacaoExponencial){
-                    if(increase_grain_vms_size <= 1)
-                        increase_grain_vms_size = increase_grain_vms_size - (int) Math.floor(Math.pow(2, 2));
-                    else
-                        increase_grain_vms_size = increase_grain_vms_size - (int) Math.floor(Math.pow(2, 2));
+                    increase_grain_vms_size = increase_grain_vms_size - (int) Math.floor(Math.pow(2, 2));
                 }
 
                 if(increase_grain_vms_size <= 0) increase_grain_vms_size = 1;
@@ -130,27 +128,25 @@ public class GrainEvaluator {
                 if(percentualDeAumento > percentualVariacaoGraoElasticoLinear && percentualDeAumento < percentualVariacaoExponencial){
                     decrease_grain_vms_size = (int) decrease_grain_vms_size + 1;
                 }else if(percentualDeAumento >= percentualVariacaoExponencial){
-                    if(decrease_grain_vms_size <= 1)
-                        decrease_grain_vms_size = decrease_grain_vms_size + (int) Math.floor(Math.pow(2, 2));
-                    else
-                        decrease_grain_vms_size = decrease_grain_vms_size + (int) Math.floor(Math.pow(2, 2));
+                    decrease_grain_vms_size = decrease_grain_vms_size + (int) Math.floor(Math.pow(2, 2));
                 }
             }
             else{
-                if(percentualDeAumento > percentualVariacaoGraoElasticoLinear && percentualDeAumento < percentualVariacaoExponencial){
+                if(percentualDeAumento < percentualVariacaoGraoElasticoLinear){
                     decrease_grain_vms_size = (int) decrease_grain_vms_size - 1;
                 }else if(percentualDeAumento >= percentualVariacaoExponencial){
-                    if(decrease_grain_vms_size <= 1)
-                        decrease_grain_vms_size = decrease_grain_vms_size - (int) Math.floor(Math.pow(2, 2));
-                    else
-                        decrease_grain_vms_size = decrease_grain_vms_size - (int) Math.floor(Math.pow(2, 2));
+                    decrease_grain_vms_size = decrease_grain_vms_size - (int) Math.floor(Math.pow(2, 2));
                 }
 
                 if(decrease_grain_vms_size <= 0) decrease_grain_vms_size = 1;
             }
-        }
+        }    
+        
     }
     
+    public String GetReportGrain(){
+        return reportGrain;
+    }
     
     public void UpdateNewUsageAfterIncreases(float cpuUsage){
         newUsageAfterIncreases = cpuUsage;
