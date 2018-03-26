@@ -35,7 +35,12 @@ public class AgingFullEvaluator extends GenericEvaluator{
         boolean alertHappen = false;
         if (counter >= VIEW_SIZE - 1){
             //test if the aging is out of the range between the thresholds
-            if (decision_cpu_load > upper_cpu_threshold) { //test if we have a violation on the higher threshold after aply the aging
+            if (usarElasticidadeMultinivel && decision_network_load > upper_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
+                high_network_alert = true;
+                low_network_alert = false;
+                alertHappen = true;
+            }  
+            else if (decision_cpu_load > upper_cpu_threshold) { //test if we have a violation on the higher threshold after aply the aging
                 high_cpu_alert = true; 
                 low_cpu_alert = false;
                 alertHappen = true;
@@ -53,15 +58,11 @@ public class AgingFullEvaluator extends GenericEvaluator{
                 low_mem_alert = true;
                 alertHappen = true;
             } 
-            if (usarElasticidadeMultinivel && decision_network_load > upper_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
-                high_network_alert = true;
-                low_network_alert = false;
-                alertHappen = true;
-            } else if (usarElasticidadeMultinivel && decision_network_load < lower_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
+           // else if (usarElasticidadeMultinivel && decision_network_load < lower_network_threshold){ //test if we have a violation on the lower threshold after aply the aging
                // high_network_alert = false;
               //  low_network_alert = true;
               //  alertHappen = true;
-            } 
+            //}
             if (!alertHappen){
                 high_cpu_alert = false;
                 low_cpu_alert = false;
