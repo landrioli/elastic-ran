@@ -1,30 +1,8 @@
-AutoElastic
+ElasticRAN
 ===========
 
-Efficient Elasticity on Cloud Computing
+Cellular mobile networks in 2020 will increase ten times their coverage area, with more than 50 billion connected devices. We will lead to a massive increase in data traffic, also fostering the development of 5G networks. Therefore industry and scientific initiatives have a crucial role in proposing related projects to meet such demand. Cloud Radio Access Networks (C-RANs) are gaining more and more attention in this context by adopting an architecture in which baseband units (BBUs) run into cloud computing resources, therefore taking advantage of distributed systems flexibility and cloud elasticity. One of the significant challenges in C-RANs lies in the high complexity of orchestrating computational resources to process incoming requests with both high performance and low infrastructure cost. In this regard, this article presents the Elastic-RAN model, which proposes a multi-level and adaptable elasticity for C-RANs. First, we explore the multi-level feature as follows: (i) one level for the BBU pools (, physical machines), given the high volume of traffic to particular BBU pools; (ii) another level for BBUs themselves (virtual machines) due to the high CPU and memory demands to process the incoming requests. Second, the adaptive feature refers to the moldable elasticity grain which resources in both previous levels are provisioned as close as possible to the current processing needs. We evaluated Elastic-RAN through experiments that simulated different load profiles, considering both CPU and network demands. We observed that Elastic-RAN might achieve gains up to 64% in the execution time when compared to a traditional C-RAN. Cellular network operators using the proposed technique will spend less energy and will have a solution that dynamically adjusts the baseband signal processing accordingly to the demand in their access networks.
 
-AutoElastic is a PaaS-level elasticity model for high performance applications in the cloud focused in academic research. AutoElastic acts at the PaaS level of a cloud, not imposing neither modifications on the application source code nor extra definitions of rules and actions by the programmer. Furthermore, AutoElastic proposes an operation without any prior knowledge of the application, ignoring, for example, the expected time for concluding each one of its phases.
+Based on AutoElastic - Vinicius Facco
 
-AutoElastic’s approach provides elasticity by hiding all resource reconfiguration actions from programmers, executing without any modifications in the application’s code. In particular, AutoElastic deals with applications that do not use specific deadlines for concluding the subparts. It targets message-passing applications with explicit parallelism, which use send/receive and accept/connect directives. AutoElastic offers a mechanism to set up a new VM without blocking the HPC application and offers horizontal elasticity actions only when forecasting that the application will really maintain the current behavior in the near future.
-
-Author: Vinicius Facco Rodrigues
-
-Email: viniciusfacco@live.com
-
-How to Use
-==========
-- Source code: AutoElastic/src/\*
-- Main class: AutoElastic/src/autoelastic/AutoElastic.java
-- Libraries: third-party-libs.rar (includes OpenNebula 4.12.1 API and additional libs)
-- SLA file: autoelastic.xml. The current version of AutoElastic uses the parameteres "MaximalHosts", "MinimalHosts", MaximalVirtualMachines" and "MinimalVitualMachines" from the SLA. These values refer to how many physical or virtual machines are allowed in the cloud.
-- Compiled version: you can download the compiled version "AutoElastic-Compiled.zip" available in the repository. Unzip the file and run AutoElastic.jar (java -jar AutoElastic.jar).
-
-AutoElastic Modes
-==========
-AutoElastic has two execution modes depending on the arguments passed by command line:
-- 0 argunments: If no argument is passed by command line, AutoElastic runs the User Interface Mode. In an user interface, all execution parameters can be setted. There is a possibility to save these parameters in a XML file to load them later or pass them by argument to AutoElastic.jar.
-- 1 argument: If one argument is passed by command line, AutoElastic runs the Command Line Mode. This argument must be a XML file with all parameters. To generate this file you can run AutoElastic firstly in the User Interface Mode and then set parameters and save a XML file. After that, you can edit this file and change any parameter if you wish.
-
-Extras
-==========
-- Application for running experiments in the cloud: https://github.com/viniciusfacco/FunctionProcessing
+Author: Leandro Andrioli
