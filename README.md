@@ -6,3 +6,5 @@ Cellular mobile networks in 2020 will increase ten times their coverage area, wi
 Based on AutoElastic - Vinicius Facco
 
 Author: Leandro Andrioli
+
+*You can find the published paper here: https://www.sciencedirect.com/science/article/pii/S0140366418309770
